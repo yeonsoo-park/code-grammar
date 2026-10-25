@@ -1,7 +1,8 @@
 "use client";
 
 import { useId, useState } from "react";
-import { QUESTION_KIND_LABEL, type ChoiceQuestion } from "@/lib/content/schema";
+import { QUESTION_KIND_LABEL } from "@/lib/content/labels";
+import type { ChoiceQuestion } from "@/lib/content/schema";
 import { BottomCta } from "./BottomCta";
 import { BottomSheet } from "./BottomSheet";
 import { CodeBlock } from "./CodeBlock";

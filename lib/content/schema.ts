@@ -147,11 +147,3 @@ export type Lesson = {
   readingQuiz: z.infer<typeof Quiz>;
   writing: Writing;
 };
-
-export const QUESTION_KIND_LABEL: Record<QuestionKind, string> = {
-  concept: "개념 확인",
-  "predict-output": "출력 예측",
-  "fill-blank": "빈칸 추론",
-  "find-bug": "버그 찾기",
-  "compare-efficiency": "더 나은 코드 고르기",
-};
