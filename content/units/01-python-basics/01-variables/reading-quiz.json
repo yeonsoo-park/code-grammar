@@ -1,0 +1,107 @@
+{
+  "questions": [
+    {
+      "id": "py-01-r1",
+      "kind": "predict-output",
+      "prompt": ["이 코드를 실행하면 무엇이 출력될까요?"],
+      "code": {
+        "lang": "python",
+        "code": ["unit_price = 25900", "quantity = 3", "subtotal = unit_price * quantity", "print(subtotal)"]
+      },
+      "choices": [
+        { "id": "a", "text": "77700", "why": "25900 × 3을 계산한 값이 subtotal에 들어 있어요." },
+        { "id": "b", "text": "25900 * 3", "why": "print()는 식을 그대로 보여주지 않아요. 계산이 끝난 결과를 보여줘요." },
+        { "id": "c", "text": "259002590025900", "why": "unit_price가 str이었다면 이렇게 나와요. 여기서는 따옴표가 없어서 int예요." },
+        { "id": "d", "text": "subtotal", "why": "따옴표 없는 subtotal은 변수 이름이에요. 이름이 아니라 안에 든 값이 출력돼요." }
+      ],
+      "answer": "a",
+      "explanation": ["두 값 모두 int라서 곱셈이 돼요. `print(subtotal)`은 subtotal 상자 안의 값 77700을 보여줘요."],
+      "verifyOutput": true,
+      "tags": ["출력 예측", "int"]
+    },
+    {
+      "id": "py-01-r2",
+      "kind": "fill-blank",
+      "prompt": [
+        "결제 금액이 5만 원 **이상**이면 무료 배송이에요.",
+        "무료 배송인지를 저장하려면 빈칸에 무엇이 들어가야 할까요?"
+      ],
+      "code": { "lang": "python", "code": ["total_amount = 50000", "is_free_shipping = total_amount ___ 50000"] },
+      "choices": [
+        { "id": "a", "code": ">=", "why": "'이상'은 같은 값도 포함해요. 그래서 `>=`가 맞아요." },
+        { "id": "b", "code": ">", "why": "`>`는 '초과'예요. 정확히 50000원이면 False가 돼서 무료 배송에서 빠져요." },
+        { "id": "c", "code": "=", "why": "`=`는 값을 넣는 기호예요. 비교에는 쓸 수 없어서 문법 에러가 나요." },
+        { "id": "d", "code": "=>", "why": "기호 순서가 반대예요. Python에서는 `>=`처럼 부등호를 먼저 써요." }
+      ],
+      "answer": "a",
+      "explanation": ["'이상'은 `>=`, '초과'는 `>`예요. 경계값(정확히 50000원)이 어느 쪽에 들어가는지 꼭 확인하세요. 실무 버그의 단골 원인이에요."],
+      "tags": ["비교", "bool"]
+    },
+    {
+      "id": "py-01-r3",
+      "kind": "find-bug",
+      "prompt": ["이 코드는 실행하면 에러가 나요. 어디를 고쳐야 할까요?"],
+      "code": {
+        "lang": "python",
+        "code": [
+          "coupon_discount = 5000",
+          "total_amount = \"45000\"",
+          "final_amount = total_amount - coupon_discount",
+          "print(final_amount)"
+        ]
+      },
+      "choices": [
+        { "id": "a", "text": "1번 줄: 5000에 따옴표를 붙여요", "why": "둘 다 str이 되면 빼기가 더 안 돼요. str끼리는 `-`를 할 수 없어요." },
+        { "id": "b", "text": "2번 줄: \"45000\"의 따옴표를 빼요", "why": "total_amount가 str이라서 숫자를 뺄 수 없었어요. 따옴표를 빼면 int가 돼요." },
+        { "id": "c", "text": "3번 줄: `-`를 `+`로 바꿔요", "why": "str과 int는 `+`로도 합칠 수 없어요. 그리고 할인은 빼야 맞아요." },
+        { "id": "d", "text": "4번 줄: print 안에 따옴표를 붙여요", "why": "`print(\"final_amount\")`는 값이 아니라 글자 final_amount를 출력해요." }
+      ],
+      "answer": "b",
+      "explanation": [
+        "에러는 3번 줄에서 나지만, 원인은 2번 줄이에요. 에러가 난 줄과 고쳐야 할 줄이 다를 수 있어요.",
+        "Python은 이럴 때 TypeError(자료형이 맞지 않아요)를 알려줘요. 에러 메시지를 보면 어떤 자료형끼리 부딪혔는지 알 수 있어요."
+      ],
+      "expectError": "TypeError",
+      "tags": ["버그 찾기", "TypeError"]
+    },
+    {
+      "id": "py-01-r4",
+      "kind": "compare-efficiency",
+      "prompt": ["두 코드의 결과는 같아요. 코드 리뷰에서 어느 쪽을 더 좋다고 할까요?"],
+      "choices": [
+        {
+          "id": "a",
+          "text": "A",
+          "code": [
+            "discount = unit_price * quantity * 0.1",
+            "total = unit_price * quantity - discount",
+            "is_big = unit_price * quantity >= 100000"
+          ],
+          "why": "같은 곱셈 `unit_price * quantity`를 세 번 해요. 줄이 짧아 보여도 계산은 더 많아요."
+        },
+        {
+          "id": "b",
+          "text": "B",
+          "code": [
+            "subtotal = unit_price * quantity",
+            "discount = subtotal * 0.1",
+            "total = subtotal - discount",
+            "is_big = subtotal >= 100000"
+          ],
+          "why": "곱셈을 한 번만 하고, 결과에 subtotal이라는 이름을 붙여 다시 써요."
+        },
+        {
+          "id": "c",
+          "text": "둘은 완전히 같아서 어느 쪽이든 괜찮아요",
+          "why": "결과는 같지만 계산 횟수와 고칠 곳의 수가 달라요. 단가 계산 방식이 바뀌면 A는 세 곳을 고쳐야 해요."
+        }
+      ],
+      "answer": "b",
+      "explanation": [
+        "B는 같은 계산을 한 번만 하고 이름을 붙여 재사용해요. 계산이 줄고, 읽는 사람도 '상품 금액'이라는 뜻을 바로 알 수 있어요.",
+        "지금은 숫자 몇 개라 차이가 작지만, 나중에 100만 행짜리 데이터를 다루면 '중복 계산 없애기'가 실행 시간을 크게 바꿔요."
+      ],
+      "tags": ["효율성", "코드 리뷰"]
+    }
+  ]
+}

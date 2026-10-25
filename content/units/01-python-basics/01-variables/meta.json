@@ -1,0 +1,19 @@
+{
+  "id": "py-01-variables",
+  "unit": { "id": "python-basics", "order": 1, "title": "Python 기초" },
+  "order": 1,
+  "title": "변수와 자료형",
+  "summary": "주문 금액을 계산하면서 값에 이름을 붙이고, 값의 종류를 구분해요.",
+  "minutes": 18,
+  "packages": [],
+  "keywords": [
+    { "term": "변수", "meaning": "값에 붙인 이름표예요. 이름으로 값을 다시 꺼내 쓸 수 있어요." },
+    { "term": "=", "meaning": "오른쪽 값을 왼쪽 이름에 넣어요. '같다'는 뜻이 아니에요." },
+    { "term": "int", "meaning": "정수예요. 소수점이 없는 숫자 (예: 32000)" },
+    { "term": "float", "meaning": "실수예요. 소수점이 있는 숫자 (예: 0.1)" },
+    { "term": "str", "meaning": "문자열이에요. 따옴표로 감싼 글자 (예: \"무선 이어폰\")" },
+    { "term": "bool", "meaning": "참(True) 또는 거짓(False) 둘 중 하나예요." },
+    { "term": "type()", "meaning": "값의 자료형을 알려주는 함수예요." },
+    { "term": "int()", "meaning": "값을 정수로 바꿔요. 문자열 \"3\"을 숫자 3으로 바꿀 때 써요." }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "questions": [
+    {
+      "id": "py-01-q1",
+      "kind": "concept",
+      "prompt": ["`quantity = 2`는 무슨 일을 할까요?"],
+      "choices": [
+        { "id": "a", "text": "quantity가 2와 같은지 확인해요", "why": "수학의 등호처럼 읽은 흔한 오해예요. 같은지 확인할 때는 `==`를 써요." },
+        { "id": "b", "text": "quantity라는 이름에 2를 넣어요", "why": "`=`는 오른쪽 값을 왼쪽 이름에 넣어요." },
+        { "id": "c", "text": "2라는 이름에 quantity를 넣어요", "why": "방향이 반대예요. 값은 언제나 오른쪽에서 왼쪽으로 들어가요." },
+        { "id": "d", "text": "화면에 quantity를 보여줘요", "why": "화면에 보여주려면 `print(quantity)`처럼 `print()`가 필요해요." }
+      ],
+      "answer": "b",
+      "explanation": ["`=`는 '넣는다'는 뜻이에요. 이 줄이 실행되면 `quantity`라는 이름표가 붙은 상자에 2가 들어가요."],
+      "tags": ["변수", "대입"]
+    },
+    {
+      "id": "py-01-q2",
+      "kind": "predict-output",
+      "prompt": ["이 코드를 실행하면 무엇이 출력될까요?"],
+      "code": { "lang": "python", "code": "print(type(\"19900\"))" },
+      "choices": [
+        { "id": "a", "text": "<class 'int'>", "why": "숫자처럼 보여서 고르기 쉬운 오답이에요. 하지만 따옴표 안에 있으면 str이에요." },
+        { "id": "b", "text": "<class 'float'>", "why": "float는 소수점이 있는 숫자예요. 따옴표로 감싼 값은 숫자가 아니에요." },
+        { "id": "c", "text": "<class 'str'>", "why": "따옴표로 감쌌기 때문에 생김새와 상관없이 str이에요." },
+        { "id": "d", "text": "19900", "why": "`type()`은 값 자체가 아니라 값의 자료형을 알려줘요." }
+      ],
+      "answer": "c",
+      "explanation": ["`\"19900\"`은 따옴표로 감싼 글자라서 str이에요. CSV에서 읽은 가격이 이렇게 들어오는 경우가 많아요."],
+      "verifyOutput": true,
+      "tags": ["자료형", "str"]
+    },
+    {
+      "id": "py-01-q3",
+      "kind": "concept",
+      "prompt": ["다음 중 자료형이 bool인 값은 무엇일까요?"],
+      "choices": [
+        { "id": "a", "code": "\"True\"", "why": "따옴표가 붙어서 str이에요. 글자 T, r, u, e가 이어진 문자열이에요." },
+        { "id": "b", "code": "True", "why": "따옴표 없이 첫 글자가 대문자인 `True`는 bool이에요." },
+        { "id": "c", "code": "1", "why": "1은 int예요. 참을 1로 표현하는 언어도 있어서 헷갈리기 쉬워요." },
+        { "id": "d", "code": "\"참\"", "why": "한국어로 '참'이라고 써도 따옴표 안에 있으면 str이에요." }
+      ],
+      "answer": "b",
+      "explanation": ["bool은 `True`와 `False` 두 값뿐이에요. 따옴표 없이, 첫 글자를 대문자로 써요."],
+      "tags": ["자료형", "bool"]
+    },
+    {
+      "id": "py-01-q4",
+      "kind": "concept",
+      "prompt": [
+        "CSV에서 읽어 온 수량 `quantity_text`의 값이 `\"3\"`이에요.",
+        "단가와 곱해서 결제 금액을 구하기 전에 무엇을 해야 할까요?"
+      ],
+      "choices": [
+        { "id": "a", "code": "int(quantity_text)", "why": "정수로 바꿔야 곱셈이 제대로 돼요." },
+        { "id": "b", "code": "str(quantity_text)", "why": "이미 str이에요. str로 다시 바꿔도 달라지는 게 없어요." },
+        { "id": "c", "text": "아무것도 하지 않고 바로 곱해요", "why": "str에 숫자를 곱하면 글자를 반복해 붙여요. 단가가 1000이면 \"333…\"처럼 3이 천 번 이어진 글자가 돼요." },
+        { "id": "d", "code": "quantity_text + 0", "why": "str과 int는 `+`로 더할 수 없어서 TypeError가 나요." }
+      ],
+      "answer": "a",
+      "explanation": ["계산하기 전에 `int()`로 자료형을 숫자로 바꿔요. 데이터 분석에서는 이 작업을 '형 변환'이라고 부르고, 거의 매번 하게 돼요."],
+      "tags": ["형 변환", "int()"]
+    }
+  ]
+}

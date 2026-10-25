@@ -1,0 +1,122 @@
+/*
+ * 디자인 토큰 — 컴포넌트에는 HEX 값을 직접 쓰지 않고 이 변수만 써요.
+ * 블루·네이비·청록 계열은 쓰지 않아요. 회색은 뉴트럴/웜 그레이만 써요.
+ *
+ * 대비 조정 (2026-10-25 승인):
+ *   --primary 는 진도 바·테두리·아이콘처럼 면과 선에만 쓰고,
+ *   글자와 버튼 배경은 대비가 더 높은 --primary-strong 을 써요.
+ *   오답·경고도 같은 방식으로 *-strong 을 글자용으로 둬요.
+ *   검사: npm run check:contrast
+ */
+
+:root {
+  color-scheme: light;
+
+  /* 브랜드 */
+  --primary: #12a26b;
+  --primary-strong: #0b7a50;
+  --primary-button: #0b7a50;
+  --primary-button-pressed: #08613f;
+  --primary-weak: #e8f7f0;
+  --on-primary: #ffffff;
+
+  /* 글자 */
+  --text-strong: #191b1a;
+  --text-sub: #6b706d;
+  --text-disabled: #b4b8b6;
+
+  /* 배경·선 */
+  --bg: #ffffff;
+  --bg-sub: #f4f5f4;
+  --bg-pressed: #e9ebea;
+  --border: #e6e8e7;
+  --border-strong: #c9cdcb;
+  --scrim: #191b1a;
+
+  /* 상태 */
+  --correct: #12a26b;
+  --correct-strong: #0b7a50;
+  --correct-weak: #e8f7f0;
+  --wrong: #e5484d;
+  --wrong-strong: #c62a2f;
+  --wrong-weak: #fdecec;
+  --warning: #f2a100;
+  --warning-strong: #8a5a00;
+  --warning-weak: #fff6e0;
+
+  /* 코드 */
+  --code-bg: #f7f7f5;
+  --code-keyword: #0b7a50;
+  --code-string: #a8550a;
+  --code-number: #8e4ec6;
+  --code-comment: #6b706d;
+  --code-highlight: #e8f7f0;
+
+  /* 간격 (4px 단위) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-14: 3.5rem;
+
+  /* 모서리 */
+  --radius-control: 0.75rem;
+  --radius-card: 1rem;
+  --radius-sheet: 1.25rem;
+
+  /* 그림자는 카드에만 아주 옅게 1단계 */
+  --shadow-card: 0 1px 2px rgb(25 27 26 / 0.06);
+
+  /* 레이아웃 */
+  --content-max: 40rem; /* 640px */
+  --gutter: 1.25rem; /* 모바일 좌우 여백 20px */
+  --topbar-h: 3.5rem;
+  --tabbar-h: 3.5rem;
+
+  --motion: 200ms;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --primary: #2fc488;
+  --primary-strong: #2fc488;
+  --primary-button: #2fc488;
+  --primary-button-pressed: #26a673;
+  --primary-weak: #123326;
+  --on-primary: #0e1a14;
+
+  --text-strong: #f2f3f2;
+  --text-sub: #a3a8a5;
+  --text-disabled: #5c615e;
+
+  --bg: #121413;
+  --bg-sub: #1c1f1d;
+  --bg-pressed: #262a28;
+  --border: #2c302e;
+  --border-strong: #454a47;
+  --scrim: #000000;
+
+  --correct: #2fc488;
+  --correct-strong: #2fc488;
+  --correct-weak: #123326;
+  --wrong: #ff6369;
+  --wrong-strong: #ff6369;
+  --wrong-weak: #3a1a1c;
+  --warning: #ffc53d;
+  --warning-strong: #ffc53d;
+  --warning-weak: #33290f;
+
+  --code-bg: #1a1c1b;
+  --code-keyword: #2fc488;
+  --code-string: #f0a35e;
+  --code-number: #c49af0;
+  --code-comment: #a3a8a5;
+  --code-highlight: #123326;
+
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3);
+}

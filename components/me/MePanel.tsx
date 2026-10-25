@@ -1,0 +1,115 @@
+"use client";
+
+import { useState, useSyncExternalStore } from "react";
+import { resetAll, streak, useAppState } from "@/lib/store";
+
+type Theme = "system" | "light" | "dark";
+const THEMES: { value: Theme; label: string }[] = [
+  { value: "system", label: "시스템 설정 따르기" },
+  { value: "light", label: "라이트" },
+  { value: "dark", label: "다크" },
+];
+
+const themeListeners = new Set<() => void>();
+
+function readTheme(): Theme {
+  try {
+    const s = localStorage.getItem("cg:theme");
+    return s === "light" || s === "dark" ? s : "system";
+  } catch {
+    return "system";
+  }
+}
+
+function subscribeTheme(l: () => void) {
+  themeListeners.add(l);
+  return () => themeListeners.delete(l);
+}
+
+function applyTheme(t: Theme) {
+  try {
+    if (t === "system") localStorage.removeItem("cg:theme");
+    else localStorage.setItem("cg:theme", t);
+  } catch {}
+  const dark = t === "dark" || (t === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
+  document.documentElement.dataset.theme = dark ? "dark" : "light";
+  themeListeners.forEach((l) => l());
+}
+
+/** 내 정보: 테마 설정, 학습 기록. 알림 설정은 M5에서 여기에 붙어요. */
+export function MePanel() {
+  const state = useAppState();
+  const theme = useSyncExternalStore(subscribeTheme, readTheme, () => "system" as Theme);
+  const [confirming, setConfirming] = useState(false);
+
+  return (
+    <div>
+      <h1 className="t-title-1">내 정보</h1>
+
+      <section className="mt-6" aria-labelledby="theme-title">
+        <h2 id="theme-title" className="t-title-3">화면 테마</h2>
+        <fieldset className="mt-3 flex flex-col gap-2">
+          <legend className="sr-only">화면 테마</legend>
+          {THEMES.map((t) => (
+            <label key={t.value} className="choice items-center" data-selected={theme === t.value}>
+              <input
+                type="radio"
+                name="theme"
+                className="sr-only"
+                checked={theme === t.value}
+                onChange={() => applyTheme(t.value)}
+              />
+              <span className="choice-mark" aria-hidden="true" />
+              <span>{t.label}</span>
+            </label>
+          ))}
+        </fieldset>
+      </section>
+
+      <section className="mt-8" aria-labelledby="record-title">
+        <h2 id="record-title" className="t-title-3">학습 기록</h2>
+        {state ? (
+          <dl className="mt-3 grid grid-cols-2 gap-2">
+            <div className="card-sub">
+              <dt className="t-caption t-sub">연속 학습</dt>
+              <dd className="t-title-2">{streak(state.studyDays)}일</dd>
+            </div>
+            <div className="card-sub">
+              <dt className="t-caption t-sub">공부한 날</dt>
+              <dd className="t-title-2">{state.studyDays.length}일</dd>
+            </div>
+          </dl>
+        ) : (
+          <div className="skeleton mt-3" style={{ height: "5.5rem" }} />
+        )}
+        <p className="t-body-2 t-sub mt-3">지금은 이 기기에만 저장돼요. 로그인 기능이 생기면 다른 기기에서도 이어서 볼 수 있어요.</p>
+
+        <div className="mt-4">
+          {confirming ? (
+            <div className="card-sub" role="alertdialog" aria-labelledby="reset-q">
+              <p id="reset-q" className="t-body-1">진도와 오답노트를 모두 지울까요? 되돌릴 수 없어요.</p>
+              <div className="mt-2 flex flex-wrap gap-1">
+                <button type="button" className="btn-text" onClick={() => setConfirming(false)}>취소</button>
+                <button
+                  type="button"
+                  className="btn-text"
+                  style={{ color: "var(--wrong-strong)" }}
+                  onClick={() => {
+                    resetAll();
+                    setConfirming(false);
+                  }}
+                >
+                  모두 지우기
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button type="button" className="btn-text -ml-3" onClick={() => setConfirming(true)}>
+              학습 기록 초기화
+            </button>
+          )}
+        </div>
+      </section>
+    </div>
+  );
+}

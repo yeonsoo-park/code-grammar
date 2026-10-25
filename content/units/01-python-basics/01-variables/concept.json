@@ -1,0 +1,128 @@
+{
+  "screens": [
+    {
+      "id": "variable",
+      "title": "변수는 이름표를 붙인 상자예요",
+      "analogy": "영어에서 앞에 나온 명사를 it으로 다시 가리키듯, 변수는 값을 이름으로 다시 불러요.",
+      "body": [
+        "주문 금액을 계산하려면 상품 가격과 수량을 기억해 둬야 해요. 이때 값에 이름을 붙여 두는 것을 **변수**라고 해요.",
+        "`unit_price = 32000`은 \"`unit_price`라는 상자에 32000을 넣어요\"라는 뜻이에요. 그다음부터는 이름만 쓰면 안에 든 값을 꺼낼 수 있어요."
+      ],
+      "code": {
+        "lang": "python",
+        "code": [
+          "unit_price = 32000",
+          "quantity = 2",
+          "print(unit_price)",
+          "print(unit_price * quantity)"
+        ],
+        "output": ["32000", "64000"]
+      },
+      "after": [
+        "`print()`는 괄호 안의 값을 화면에 보여줘요. `*`는 곱하기예요.",
+        "이름은 영어 소문자로 쓰고, 단어 사이는 `_`로 이어요. 이런 방식을 snake_case라고 불러요."
+      ],
+      "keyPoint": "`=`는 '같다'가 아니라 '오른쪽 값을 왼쪽 이름에 넣는다'예요."
+    },
+    {
+      "id": "types",
+      "title": "값에도 품사가 있어요",
+      "analogy": "영어 단어에 명사·동사 같은 품사가 있듯, 값에는 자료형(type)이 있어요.",
+      "body": [
+        "자료형에 따라 할 수 있는 일이 달라져요. 숫자끼리는 곱할 수 있지만, 상품명은 곱할 수 없는 것처럼요.",
+        "처음에는 아래 네 가지만 알면 충분해요. `type()`에 값을 넣으면 그 값의 자료형을 알려줘요."
+      ],
+      "table": {
+        "caption": "기본 자료형 4가지",
+        "head": ["자료형", "뜻", "주문 데이터 예시"],
+        "rows": [
+          ["int", "정수", "32000 (가격)"],
+          ["float", "실수 (소수점)", "0.1 (할인율)"],
+          ["str", "문자열 (글자)", "\"무선 이어폰\" (상품명)"],
+          ["bool", "참·거짓", "True (쿠폰 사용 여부)"]
+        ]
+      },
+      "code": {
+        "lang": "python",
+        "code": [
+          "print(type(32000))",
+          "print(type(0.1))",
+          "print(type(\"무선 이어폰\"))",
+          "print(type(True))"
+        ],
+        "output": ["<class 'int'>", "<class 'float'>", "<class 'str'>", "<class 'bool'>"]
+      },
+      "keyPoint": "값의 자료형이 궁금하면 `type()`으로 물어보면 돼요."
+    },
+    {
+      "id": "quotes",
+      "title": "따옴표가 있으면 숫자도 글자예요",
+      "analogy": "\"7\"이라고 적힌 간판은 숫자처럼 보여도 계산할 수 없는 글자예요.",
+      "body": [
+        "`32000`과 `\"32000\"`은 생김새가 비슷하지만 자료형이 달라요. 따옴표로 감싸면 str이 돼요.",
+        "str에 `* 2`를 하면 곱셈이 아니라 글자를 두 번 이어 붙여요. 에러 없이 이상한 값이 나와서 알아채기 어려워요."
+      ],
+      "code": {
+        "lang": "python",
+        "code": [
+          "price_number = 32000",
+          "price_text = \"32000\"",
+          "print(price_number * 2)",
+          "print(price_text * 2)"
+        ],
+        "output": ["64000", "3200032000"]
+      },
+      "after": [
+        "데이터 분석에서 아주 자주 만나는 함정이에요. CSV 파일에서 읽어 온 숫자가 str로 들어오는 경우가 많거든요."
+      ],
+      "keyPoint": "숫자처럼 보여도 따옴표 안에 있으면 str이에요."
+    },
+    {
+      "id": "convert",
+      "title": "자료형은 바꿀 수 있어요",
+      "analogy": "명사 success를 형용사 successful로 바꾸듯, 값의 자료형도 바꿀 수 있어요.",
+      "body": [
+        "`int()`는 정수로, `float()`는 실수로, `str()`은 문자열로 바꿔요. 바꿀 값을 괄호 안에 넣으면 돼요.",
+        "글자와 숫자를 이어서 출력하고 싶을 때는 숫자를 `str()`로 바꿔야 해요. str끼리만 `+`로 이을 수 있거든요."
+      ],
+      "code": {
+        "lang": "python",
+        "code": [
+          "quantity_text = \"3\"",
+          "quantity = int(quantity_text)",
+          "print(quantity * 2)",
+          "",
+          "discount_rate = float(\"0.1\")",
+          "print(discount_rate)",
+          "",
+          "print(\"수량: \" + str(quantity))"
+        ],
+        "output": ["6", "0.1", "수량: 3"]
+      },
+      "keyPoint": "계산 전에는 숫자로, 글자와 이을 때는 str로 바꿔요."
+    },
+    {
+      "id": "bool",
+      "title": "bool은 예·아니오 질문의 답이에요",
+      "analogy": "\"Is it free shipping?\"이라는 질문에 Yes 또는 No로 답하는 것과 같아요.",
+      "body": [
+        "`>=`(이상), `<`(미만) 같은 비교를 하면 결과가 `True` 또는 `False`로 나와요. 이 두 값의 자료형이 bool이에요.",
+        "`True`와 `False`는 따옴표 없이, 첫 글자를 대문자로 써요. `\"True\"`처럼 따옴표를 붙이면 str이 돼요."
+      ],
+      "code": {
+        "lang": "python",
+        "code": [
+          "total_amount = 64000",
+          "is_free_shipping = total_amount >= 50000",
+          "print(is_free_shipping)",
+          "print(type(is_free_shipping))"
+        ],
+        "output": ["True", "<class 'bool'>"]
+      },
+      "after": [
+        "bool 변수 이름은 `is_`나 `has_`로 시작하면 읽기 쉬워요. 이름만 봐도 예·아니오 질문이라는 걸 알 수 있거든요."
+      ],
+      "keyPoint": "비교의 결과는 bool이에요. True·False는 따옴표 없이 써요."
+    }
+  ]
+}
