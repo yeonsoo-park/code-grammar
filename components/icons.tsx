@@ -9,7 +9,7 @@ function Svg({ size = 24, className, children }: P & { children: React.ReactNode
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={2}
+      strokeWidth={1.75}
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
@@ -68,17 +68,6 @@ export const IconUser = (p: P) => (
   <Svg {...p}>
     <circle cx="12" cy="8.5" r="3.5" />
     <path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" />
-  </Svg>
-);
-export const IconFlame = (p: P) => (
-  <Svg {...p}>
-    <path d="M12 21c3.9 0 6.5-2.6 6.5-6.2 0-3.4-2.4-5.6-3.7-7.8-.6 1.6-1.4 2.6-2.6 3.2C12.4 7.4 11 4.9 9 3c.2 3-1.6 5-3 7-1 1.4-1.5 3-1.5 4.8C4.5 18.4 7.6 21 12 21z" />
-  </Svg>
-);
-export const IconClock = (p: P) => (
-  <Svg {...p}>
-    <circle cx="12" cy="12" r="8.5" />
-    <path d="M12 7.5V12l3 2" />
   </Svg>
 );
 export const IconPlay = (p: P) => (

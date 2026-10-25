@@ -76,7 +76,7 @@ function Player({ lesson, steps, initialStep }: { lesson: Lesson; steps: Step[];
 
   return (
     <div className="min-h-dvh">
-      <header className="sticky top-0 z-20 border-b" style={{ background: "var(--bg)", borderColor: "var(--border)" }}>
+      <header className="sticky top-0 z-20" style={{ background: "var(--bg)" }}>
         <div className="content flex items-center gap-2 py-2">
           <button type="button" className="icon-btn -ml-2" onClick={back} aria-label={stepIndex > 0 ? "이전 화면" : "학습 목록으로"}>
             <IconBack />
@@ -87,21 +87,22 @@ function Player({ lesson, steps, initialStep }: { lesson: Lesson; steps: Step[];
         </div>
       </header>
 
-      <main className="content pb-6 pt-6">
-        <h2 ref={topRef} tabIndex={-1} className="t-caption t-sub mb-4 outline-none">
+      <main className="content pb-6 pt-5">
+        <h2 ref={topRef} tabIndex={-1} className="t-caption t-sub mb-3 flex flex-wrap items-baseline justify-between gap-x-3 outline-none">
           {step.kind === "finish" ? (
             lesson.meta.title
           ) : (
             <>
-              <span style={{ color: "var(--primary-strong)", fontWeight: 700 }}>
+              <span className="min-w-0">
                 {stage + 1}단계&nbsp;{stageInfo.name}
+                <span aria-hidden="true"> · </span>
+                <span className="sr-only">, </span>영어의 {stageInfo.english}
               </span>
-              {" · "}영어로 치면 {stageInfo.english}
               {stageSize > 1 && (
-                <>
-                  {" · "}
-                  {inStage + 1}/{stageSize}
-                </>
+                <span className="tabular-nums">
+                  <span className="sr-only">진행 </span>
+                  {inStage + 1}&nbsp;/&nbsp;{stageSize}
+                </span>
               )}
             </>
           )}
@@ -175,36 +176,36 @@ function FinishView({ lesson, score }: { lesson: Lesson; score: { correct: numbe
   const total = score.correct + score.wrong;
   return (
     <div>
-      <p className="result-label-correct flex items-center gap-2 t-title-3">
-        <IconCheck /> 레슨을 끝냈어요
+      <p className="result-label-correct t-body-2 flex items-center gap-1.5">
+        <IconCheck size={18} /> 레슨을 끝냈어요
       </p>
       <h1 className="t-title-1 mt-2">{lesson.meta.title}</h1>
-      <p className="t-body-1 t-sub mt-3">{lesson.meta.summary}</p>
+      <p className="t-body-1 t-sub mt-2">{lesson.meta.summary}</p>
 
       {total > 0 && (
-        <dl className="mt-6 grid grid-cols-2 gap-3">
-          <div className="card-sub">
-            <dt className="t-caption t-sub">이번에 맞힌 문제</dt>
-            <dd className="t-title-2 mt-1">
+        <dl className="mt-8 grid grid-cols-2 border-y py-4" style={{ borderColor: "var(--border)" }}>
+          <div>
+            <dt className="t-caption t-sub">맞힌 문제</dt>
+            <dd className="t-title-2 mt-0.5 tabular-nums">
               {score.correct}&nbsp;/&nbsp;{total}
             </dd>
           </div>
-          <div className="card-sub">
+          <div>
             <dt className="t-caption t-sub">오답노트에 담은 문제</dt>
-            <dd className="t-title-2 mt-1">{score.wrong}개</dd>
+            <dd className="t-title-2 mt-0.5 tabular-nums">{score.wrong}개</dd>
           </div>
         </dl>
       )}
 
-      <section className="mt-6">
-        <h2 className="t-title-3 mb-3">이번 레슨의 단어장</h2>
-        <dl className="flex flex-col gap-2">
+      <section className="mt-8">
+        <h2 className="section-title">이번 레슨의 단어장</h2>
+        <dl className="divided">
           {lesson.meta.keywords.map((k) => (
-            <div key={k.term} className="card-sub flex flex-col gap-1 py-3">
+            <div key={k.term} className="grid gap-x-4 gap-y-0.5 py-3 sm:grid-cols-[7rem_1fr]">
               <dt>
                 <code className="inline-code">{k.term}</code>
               </dt>
-              <dd className="t-body-2">{k.meaning}</dd>
+              <dd className="t-body-2 t-sub">{k.meaning}</dd>
             </div>
           ))}
         </dl>

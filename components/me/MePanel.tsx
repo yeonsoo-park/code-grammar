@@ -47,8 +47,8 @@ export function MePanel() {
       <h1 className="t-title-1">내 정보</h1>
 
       <section className="mt-6" aria-labelledby="theme-title">
-        <h2 id="theme-title" className="t-title-3">화면 테마</h2>
-        <fieldset className="mt-3 flex flex-col gap-2">
+        <h2 id="theme-title" className="section-title">화면 테마</h2>
+        <fieldset className="flex flex-col gap-2">
           <legend className="sr-only">화면 테마</legend>
           {THEMES.map((t) => (
             <label key={t.value} className="choice items-center" data-selected={theme === t.value}>
@@ -66,21 +66,21 @@ export function MePanel() {
         </fieldset>
       </section>
 
-      <section className="mt-8" aria-labelledby="record-title">
-        <h2 id="record-title" className="t-title-3">학습 기록</h2>
+      <section className="mt-10" aria-labelledby="record-title">
+        <h2 id="record-title" className="section-title">학습 기록</h2>
         {state ? (
-          <dl className="mt-3 grid grid-cols-2 gap-2">
-            <div className="card-sub">
+          <dl className="grid grid-cols-2 border-y py-4" style={{ borderColor: "var(--border)" }}>
+            <div>
               <dt className="t-caption t-sub">연속 학습</dt>
-              <dd className="t-title-2">{streak(state.studyDays)}일</dd>
+              <dd className="t-title-2 mt-0.5 tabular-nums">{streak(state.studyDays)}일</dd>
             </div>
-            <div className="card-sub">
+            <div>
               <dt className="t-caption t-sub">공부한 날</dt>
-              <dd className="t-title-2">{state.studyDays.length}일</dd>
+              <dd className="t-title-2 mt-0.5 tabular-nums">{state.studyDays.length}일</dd>
             </div>
           </dl>
         ) : (
-          <div className="skeleton mt-3" style={{ height: "5.5rem" }} />
+          <div className="skeleton" style={{ height: "5rem" }} />
         )}
         <p className="t-body-2 t-sub mt-3">지금은 이 기기에만 저장돼요. 로그인 기능이 생기면 다른 기기에서도 이어서 볼 수 있어요.</p>
 

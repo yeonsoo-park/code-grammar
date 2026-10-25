@@ -44,7 +44,7 @@ export function ChoiceQuestionView({
   return (
     <div>
       {header}
-      <p className="badge badge-neutral mb-3">{QUESTION_KIND_LABEL[question.kind]}</p>
+      <p className="eyebrow mb-2">{QUESTION_KIND_LABEL[question.kind]}</p>
       <fieldset>
         <legend className="t-title-2 mb-5">
           <span className="prose-flow block">
@@ -62,7 +62,7 @@ export function ChoiceQuestionView({
           </div>
         )}
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2">
           {question.choices.map((c, i) => {
             const isSelected = selected === c.id;
             const result = graded ? (c.id === question.answer ? "correct" : isSelected ? "wrong" : undefined) : undefined;
@@ -137,18 +137,18 @@ export function ChoiceQuestionView({
           onAction={onNext}
         >
           <Paragraphs items={question.explanation} />
-          <div className="mt-5 flex flex-col gap-3">
+          <div className="divided mt-5 border-t" style={{ borderColor: "var(--border)" }}>
             {question.choices
               .map((c, i) => ({ c, i }))
               .sort((a, b) => Number(b.c.id === question.answer) - Number(a.c.id === question.answer))
               .map(({ c, i }) => {
                 const isAnswer = c.id === question.answer;
                 return (
-                  <div key={c.id} className="card-sub">
-                    <p className={`t-body-2 mb-1 flex items-center gap-1 ${isAnswer ? "result-label-correct" : "t-sub"}`}>
-                      {isAnswer ? <IconCheck size={18} /> : <IconX size={18} />}
+                  <div key={c.id} className="py-3">
+                    <p className={`t-caption mb-0.5 flex items-center gap-1 font-semibold ${isAnswer ? "result-label-correct" : "t-sub"}`}>
+                      {isAnswer ? <IconCheck size={16} /> : <IconX size={16} />}
                       {LETTERS[i]} {isAnswer ? "정답인 이유" : "틀린 이유"}
-                      {c.id === selected && !isAnswer ? " (내가 고른 답)" : ""}
+                      {c.id === selected && !isAnswer ? " · 내가 고른 답" : ""}
                     </p>
                     <p className="t-body-2">
                       <RichText text={c.why} />

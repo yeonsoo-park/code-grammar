@@ -71,7 +71,7 @@ export function FillTaskView({ task, packages, onNext }: { task: FillTask; packa
 
   return (
     <div>
-      <p className="badge mb-3">{LEVEL_LABEL.fill}</p>
+      <p className="eyebrow mb-2">{LEVEL_LABEL.fill}</p>
       <h1 className="t-title-2 mb-3">{task.title}</h1>
       <Paragraphs items={task.prompt} />
 
@@ -195,13 +195,13 @@ export function CodeTaskView({ task, packages, onNext }: { task: CodeTask; packa
 
   return (
     <div>
-      <p className="badge mb-3">{LEVEL_LABEL[task.kind]}</p>
+      <p className="eyebrow mb-2">{LEVEL_LABEL[task.kind]}</p>
       <h1 className="t-title-2 mb-3">{task.title}</h1>
       <Paragraphs items={task.prompt} />
 
-      <div className="card-sub mt-5">
-        <h2 className="t-title-3 mb-2">요구사항</h2>
-        <ol className="flex list-decimal flex-col gap-1 pl-5">
+      <div className="mt-6">
+        <h2 className="section-title">요구사항</h2>
+        <ol className="flex list-decimal flex-col gap-1.5 pl-5 marker:text-[var(--text-sub)]">
           {task.requirements.map((r, i) => (
             <li key={i} className="t-body-1">
               <RichText text={r} />
@@ -283,10 +283,7 @@ export function CodeTaskView({ task, packages, onNext }: { task: CodeTask; packa
           <div className="mt-4">
             <CodeBlock code={task.solution} label="모범 답안과 비교해 보세요" />
           </div>
-          <div className="card-sub mt-4">
-            <p className="t-title-3">AI 첨삭</p>
-            <p className="t-body-2 t-sub mt-1">정확성·가독성·효율성 점수와 고친 코드를 보여주는 AI 첨삭은 곧 열려요.</p>
-          </div>
+          <p className="t-body-2 t-sub mt-4">정확성·가독성·효율성 점수와 고친 코드를 보여주는 AI 첨삭은 곧 열려요.</p>
         </BottomSheet>
       ) : (
         <BottomCta

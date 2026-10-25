@@ -46,8 +46,8 @@ export function ReviewPanel({ questions }: { questions: Record<string, ReviewQue
       const ok = results.filter(Boolean).length;
       return (
         <div>
-          <p className="result-label-correct t-title-3 flex items-center gap-2">
-            <IconCheck /> 오늘 복습을 끝냈어요
+          <p className="result-label-correct t-body-2 flex items-center gap-1.5">
+            <IconCheck size={18} /> 오늘 복습을 끝냈어요
           </p>
           <h1 className="t-title-1 mt-2">
             {session.length}문제 중 {ok}문제를 맞혔어요
@@ -90,9 +90,9 @@ export function ReviewPanel({ questions }: { questions: Record<string, ReviewQue
     return (
       <div>
         <h1 className="t-title-1">오답노트</h1>
-        <div className="card-sub mt-6 text-center">
+        <div className="mt-10">
           <p className="t-title-3">아직 틀린 문제가 없어요</p>
-          <p className="t-body-2 t-sub mt-2">레슨에서 틀린 문제는 여기에 모여요. 1일·3일·7일·14일 뒤에 다시 풀면서 오래 기억하게 돼요.</p>
+          <p className="t-body-2 t-sub mt-1">레슨에서 틀린 문제는 여기에 모여요. 1일·3일·7일·14일 뒤에 다시 풀면서 오래 기억하게 돼요.</p>
         </div>
         <BottomCta label="레슨 풀러 가기" onClick={() => router.push("/learn")} tabbed />
       </div>
@@ -107,11 +107,11 @@ export function ReviewPanel({ questions }: { questions: Record<string, ReviewQue
       <p className="t-body-2 t-sub mt-1">
         {due.length ? `오늘 복습할 문제가 ${due.length}개 있어요.` : "오늘 복습할 문제는 없어요. 다음 복습일에 다시 알려 드릴게요."}
       </p>
-      <ul className="mt-6 flex flex-col gap-2">
+      <ul className="divided mt-6 border-y" style={{ borderColor: "var(--border)" }}>
         {sorted.map((r) => {
           const rq = questions[r.questionId];
           return (
-            <li key={r.questionId} className="card-sub flex flex-col gap-1">
+            <li key={r.questionId} className="flex flex-col gap-0.5 py-4">
               <p className="t-caption t-sub">
                 {rq.lessonTitle} · 틀린 횟수 {r.wrongCount}번
               </p>

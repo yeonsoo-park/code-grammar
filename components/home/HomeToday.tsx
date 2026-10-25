@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { isDue } from "@/lib/srs";
 import { streak, useAppState } from "@/lib/store";
 import { BottomCta } from "../BottomCta";
-import { IconClock, IconFlame, IconNote } from "../icons";
 
 type LessonInfo = { id: string; title: string; unit: string; minutes: number };
 
@@ -28,23 +27,22 @@ export function HomeToday({ lessons }: { lessons: LessonInfo[] }) {
 
   return (
     <div>
-      <h1 className="t-title-1">오늘의 학습</h1>
-      <p className="t-body-2 t-sub mt-1">하루 15~20분이면 충분해요.</p>
+      <p className="eyebrow">{days > 0 ? `${days}일째 이어서 공부하고 있어요` : "오늘부터 시작해 볼까요"}</p>
+      <h1 className="t-title-1 mt-1">오늘의 학습</h1>
 
       <section className="card mt-6" aria-labelledby="today-title">
         {nextLesson ? (
           <>
-            <p className="badge">새 레슨</p>
-            <h2 id="today-title" className="t-title-2 mt-3">
+            <p className="eyebrow">새 레슨 · {nextLesson.unit}</p>
+            <h2 id="today-title" className="t-title-2 mt-1">
               {nextLesson.title}
             </h2>
-            <p className="t-body-2 t-sub mt-1">{nextLesson.unit}</p>
             {inProgress?.step ? (
               <div className="mt-4">
                 <div className="stage-track" aria-hidden="true">
                   <div className="stage-fill" style={{ width: `${Math.round((inProgress.step / inProgress.totalSteps) * 100)}%` }} />
                 </div>
-                <p className="t-caption t-sub mt-1">
+                <p className="t-caption t-sub mt-1.5">
                   {inProgress.step}&nbsp;/&nbsp;{inProgress.totalSteps} 화면까지 했어요
                 </p>
               </div>
@@ -56,26 +54,25 @@ export function HomeToday({ lessons }: { lessons: LessonInfo[] }) {
           </h2>
         )}
 
-        <dl className="mt-5 grid grid-cols-3 gap-2">
-          <Stat icon={<IconClock size={20} />} label="예상 시간" value={`${minutes}분`} />
-          <Stat icon={<IconNote size={20} />} label="복습 문제" value={`${dueCount}개`} />
-          <Stat icon={<IconFlame size={20} />} label="연속 학습" value={`${days}일`} />
+        <dl className="mt-5 grid grid-cols-3 border-t pt-4" style={{ borderColor: "var(--border)" }}>
+          <Stat label="예상 시간" value={`${minutes}분`} />
+          <Stat label="복습 문제" value={`${dueCount}개`} />
+          <Stat label="연속 학습" value={`${days}일`} />
         </dl>
       </section>
 
-      <section className="mt-6" aria-labelledby="progress-title">
-        <h2 id="progress-title" className="t-title-3">
-          전체 진도
-        </h2>
-        <div className="mt-3 flex items-center gap-3">
-          <div className="stage-track min-w-0 flex-1" style={{ height: "0.5rem" }} aria-hidden="true">
-            <div className="stage-fill" style={{ width: `${percent}%` }} />
-          </div>
-          <p className="t-body-2 flex-none">{percent}%</p>
+      <section className="mt-10" aria-labelledby="progress-title">
+        <div className="flex items-baseline justify-between gap-3">
+          <h2 id="progress-title" className="section-title mb-0">
+            전체 진도
+          </h2>
+          <p className="t-caption t-sub tabular-nums">
+            {completed}&nbsp;/&nbsp;{lessons.length} 레슨 · {percent}%
+          </p>
         </div>
-        <p className="t-caption t-sub mt-1">
-          지금 열린 레슨 {lessons.length}개 중 {completed}개 완료
-        </p>
+        <div className="stage-track mt-2" aria-hidden="true">
+          <div className="stage-fill" style={{ width: `${percent}%` }} />
+        </div>
       </section>
 
       <BottomCta label={ctaLabel} onClick={() => router.push(target)} tabbed />
@@ -83,16 +80,11 @@ export function HomeToday({ lessons }: { lessons: LessonInfo[] }) {
   );
 }
 
-function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="card-sub flex min-w-0 flex-col gap-1 px-3 py-3">
-      <dt className="t-caption t-sub flex flex-col items-start gap-1">
-        <span className="flex-none" style={{ color: "var(--primary)" }}>
-          {icon}
-        </span>
-        <span className="min-w-0">{label}</span>
-      </dt>
-      <dd className="t-title-3">{value}</dd>
+    <div className="min-w-0">
+      <dt className="t-caption t-sub">{label}</dt>
+      <dd className="t-title-3 mt-0.5 tabular-nums">{value}</dd>
     </div>
   );
 }
@@ -100,10 +92,10 @@ function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; va
 function HomeSkeleton() {
   return (
     <div aria-busy="true" aria-label="오늘의 학습을 불러오고 있어요">
-      <h1 className="t-title-1">오늘의 학습</h1>
-      <p className="t-body-2 t-sub mt-1">하루 15~20분이면 충분해요.</p>
-      <div className="skeleton mt-6" style={{ height: "15rem", borderRadius: "var(--radius-card)" }} />
-      <div className="skeleton mt-6" style={{ height: "4.5rem" }} />
+      <div className="skeleton" style={{ height: "1.25rem", width: "45%" }} />
+      <h1 className="t-title-1 mt-1">오늘의 학습</h1>
+      <div className="skeleton mt-6" style={{ height: "11rem", borderRadius: "var(--radius-card)" }} />
+      <div className="skeleton mt-10" style={{ height: "2.5rem" }} />
     </div>
   );
 }

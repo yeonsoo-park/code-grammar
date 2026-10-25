@@ -1,6 +1,6 @@
 import type { ConceptScreen } from "@/lib/content/schema";
 import { CodeBlock, OutputBlock } from "../CodeBlock";
-import { IconBook } from "../icons";
+import { IconBulb } from "../icons";
 import { Paragraphs, RichText } from "../RichText";
 
 /** 1단계 개념: 한 화면에 개념 하나 */
@@ -10,12 +10,9 @@ export function ConceptView({ screen }: { screen: ConceptScreen }) {
       <h1 className="t-title-1">{screen.title}</h1>
 
       {screen.analogy && (
-        <p className="card-sub t-body-2 mt-4 flex items-start gap-2">
-          <IconBook size={20} className="mt-0.5 flex-none" />
-          <span className="min-w-0">
-            <span className="sr-only">영어 학습 비유: </span>
-            <RichText text={screen.analogy} />
-          </span>
+        <p className="quote t-body-2 mt-5">
+          <span className="sr-only">영어 학습 비유: </span>
+          <RichText text={screen.analogy} />
         </p>
       )}
 
@@ -63,11 +60,10 @@ export function ConceptView({ screen }: { screen: ConceptScreen }) {
       )}
 
       {screen.keyPoint && (
-        <div className="mt-6 rounded-2xl border-l-4 p-4" style={{ borderColor: "var(--primary)", background: "var(--primary-weak)" }}>
-          <p className="t-caption mb-1 font-semibold" style={{ color: "var(--primary-strong)" }}>
-            핵심
-          </p>
-          <p className="t-body-1 font-semibold">
+        <div className="callout mt-8">
+          <IconBulb size={20} className="mt-0.5 flex-none t-sub" />
+          <p className="t-body-1">
+            <span className="sr-only">핵심: </span>
             <RichText text={screen.keyPoint} />
           </p>
         </div>

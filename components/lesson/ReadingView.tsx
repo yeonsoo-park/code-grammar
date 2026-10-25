@@ -59,10 +59,10 @@ export function ReadingView({ reading }: { reading: Reading }) {
         )}
       </div>
 
-      <div className="card-sub mt-6">
-        <h2 className="t-title-3 mb-2">정리</h2>
-        <Paragraphs items={reading.wrapUp} className="t-body-2" />
-      </div>
+      <section className="mt-8 border-t pt-6" style={{ borderColor: "var(--border)" }}>
+        <h2 className="section-title">정리</h2>
+        <Paragraphs items={reading.wrapUp} />
+      </section>
     </article>
   );
 }

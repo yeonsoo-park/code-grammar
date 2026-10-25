@@ -52,6 +52,10 @@ const pairs: [string, string, number, string][] = [
   ["code-number", "code-bg", 4.5, "코드 숫자"],
   ["code-comment", "code-bg", 4.5, "코드 주석"],
   ["text-sub", "code-bg", 4.5, "줄 번호"],
+  ["text-strong", "code-highlight", 4.5, "펼친 줄 해석"],
+  ["code-keyword", "code-highlight", 4.5, "펼친 줄 키워드"],
+  ["code-string", "code-highlight", 4.5, "펼친 줄 문자열"],
+  ["code-comment", "code-highlight", 4.5, "펼친 줄 주석"],
 ];
 
 let failed = 0;

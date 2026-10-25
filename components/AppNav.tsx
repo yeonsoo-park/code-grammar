@@ -37,8 +37,8 @@ export function Sidebar({ units }: { units: SidebarUnit[] }) {
   const pathname = usePathname();
   return (
     <aside
-      className="fixed inset-y-0 left-0 hidden w-64 overflow-y-auto border-r px-4 py-6 lg:block"
-      style={{ borderColor: "var(--border)", background: "var(--bg)" }}
+      className="fixed inset-y-0 left-0 hidden w-64 overflow-y-auto border-r px-3 py-6 lg:block"
+      style={{ borderColor: "var(--border)", background: "var(--bg-sub)" }}
     >
       <p className="t-title-3 px-3">코드 영문법</p>
       <nav className="mt-6 flex flex-col gap-1" aria-label="주요 메뉴">
@@ -49,16 +49,14 @@ export function Sidebar({ units }: { units: SidebarUnit[] }) {
               key={href}
               href={href}
               aria-current={active ? "page" : undefined}
-              className="flex min-h-11 items-center gap-3 rounded-xl px-3 py-2 no-underline"
+              className="t-body-2 flex min-h-11 items-center gap-2.5 rounded-md px-3 py-1.5 no-underline"
               style={{
                 color: active ? "var(--text-strong)" : "var(--text-sub)",
-                background: active ? "var(--bg-sub)" : undefined,
-                fontWeight: active ? 700 : 500,
+                background: active ? "var(--bg-pressed)" : undefined,
+                fontWeight: active ? 600 : 500,
               }}
             >
-              <span style={{ color: active ? "var(--primary)" : undefined }}>
-                <Icon size={22} />
-              </span>
+              <Icon size={20} />
               {label}
             </Link>
           );
