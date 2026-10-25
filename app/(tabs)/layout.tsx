@@ -1,18 +1,13 @@
-import { Sidebar, TabBar, type SidebarUnit } from "@/components/AppNav";
-import { getAllLessons } from "@/lib/content/load";
+import { Sidebar, TabBar } from "@/components/AppNav";
+import { getUnits } from "@/lib/content/curriculum";
 
 export default function TabsLayout({ children }: LayoutProps<"/">) {
-  const units = new Map<string, SidebarUnit>();
-  for (const l of getAllLessons()) {
-    const u = units.get(l.meta.unit.id) ?? { id: l.meta.unit.id, title: l.meta.unit.title, lessons: [] };
-    u.lessons.push({ id: l.meta.id, title: l.meta.title });
-    units.set(u.id, u);
-  }
+  const units = getUnits().map((u) => ({ id: u.id, order: u.order, title: u.title }));
   return (
     <>
-      <Sidebar units={[...units.values()]} />
+      <Sidebar units={units} />
       <div className="lg:pl-64">
-        <main className="content pt-8">{children}</main>
+        <main className="content pt-6">{children}</main>
         <div className="tabbar-spacer" aria-hidden="true" />
       </div>
       <TabBar />

@@ -1,58 +1,85 @@
 /*
  * 디자인 토큰 — 컴포넌트에는 HEX 값을 직접 쓰지 않고 이 변수만 써요.
- * 블루·네이비·청록 계열은 쓰지 않아요. 회색은 뉴트럴/웜 그레이만 써요.
  *
- * 초록은 주요 버튼·진행 바·정답 표시에만 써요. 나머지는 흑백과 여백으로 위계를 만들어요.
+ * 키 컬러: 바이올렛 (2026-10-26 사용자 선택)
+ *   --primary        진행 바·선택 테두리·아이콘 같은 면과 선
+ *   --primary-strong 글자용 (대비가 더 높은 진한 보라)
+ *   --primary-button 주요 버튼 배경
+ *   --primary-weak   라일락 파스텔 (카드·선택 배경)
+ * 보조 파스텔: 오렌지·핑크·그린. 학습 요소마다 하나씩 맡아서 3D 아이콘과 카드에 써요.
+ * 정답은 그린, 오답은 레드로 키 컬러와 분리해요. 블루·네이비·청록 계열은 쓰지 않아요.
+ * 그라데이션은 배경에는 쓰지 않고, 3D 아이콘 안에서 입체감을 낼 때만 써요.
  *
- * 대비 조정 (2026-10-25 승인):
- *   --primary 는 진도 바·테두리·아이콘처럼 면과 선에만 쓰고,
- *   글자와 버튼 배경은 대비가 더 높은 --primary-strong 을 써요.
- *   오답·경고도 같은 방식으로 *-strong 을 글자용으로 둬요.
- *   검사: npm run check:contrast
+ * 검사: npm run check:contrast
  */
 
 :root {
   color-scheme: light;
 
-  /* 브랜드 */
-  --primary: #12a26b;
-  --primary-strong: #0b7a50;
-  --primary-button: #0b7a50;
-  --primary-button-pressed: #08613f;
-  --primary-weak: #e8f7f0;
+  /* 키 컬러 */
+  --primary: #7357f6;
+  --primary-strong: #5b3fe0;
+  --primary-button: #6447ee;
+  --primary-button-pressed: #5236d6;
+  --primary-weak: #efebff;
   --on-primary: #ffffff;
 
   /* 글자 */
-  --text-strong: #191b1a;
-  --text-sub: #6b706d;
-  --text-disabled: #b4b8b6;
+  --text-strong: #1e1b2e;
+  --text-sub: #6b6780;
+  --text-disabled: #b6b3c4;
 
-  /* 배경·선 */
+  /* 배경·선: 페이지는 옅은 라일락 회색, 카드는 흰색 */
+  --bg-page: #f5f4fa;
   --bg: #ffffff;
-  --bg-sub: #f4f5f4;
-  --bg-pressed: #e9ebea;
-  --border: #ebecea;
-  --border-strong: #d4d7d5;
-  --scrim: #191b1a;
+  --bg-sub: #f1eff7;
+  --bg-pressed: #e7e4f0;
+  --border: #e8e6f0;
+  --border-strong: #d3cfe0;
+  --scrim: #1e1b2e;
+
+  /* 보조 파스텔 (카드 배경 · 3D 아이콘) */
+  --violet-50: #efebff;
+  --violet-200: #cdc1ff;
+  --violet-400: #9f89ff;
+  --violet-600: #6447ee;
+  --violet-800: #3d24a8;
+  --orange-50: #fff2e0;
+  --orange-200: #ffd49a;
+  --orange-400: #ffad45;
+  --orange-600: #ea8613;
+  --orange-800: #a85700;
+  --pink-50: #ffebf4;
+  --pink-200: #ffbfdc;
+  --pink-400: #ff83bb;
+  --pink-600: #e4569a;
+  --pink-800: #a62c66;
+  --green-50: #e5f7ed;
+  --green-200: #a6e8c4;
+  --green-400: #4fcf8e;
+  --green-600: #1fa463;
+  --green-800: #0d6e40;
+  --ill-white: #ffffff;
+  --ill-shadow: #1e1b2e;
 
   /* 상태 */
   --correct: #12a26b;
   --correct-strong: #0b7a50;
-  --correct-weak: #e8f7f0;
+  --correct-weak: #e5f7ed;
   --wrong: #e5484d;
   --wrong-strong: #c62a2f;
   --wrong-weak: #fdecec;
   --warning: #f2a100;
   --warning-strong: #8a5a00;
-  --warning-weak: #fff6e0;
+  --warning-weak: #fff2e0;
 
   /* 코드 */
-  --code-bg: #f7f7f5;
-  --code-keyword: #0b7a50;
+  --code-bg: #faf9fd;
+  --code-keyword: #5b3fe0;
   --code-string: #a8550a;
-  --code-number: #8e4ec6;
-  --code-comment: #646966;
-  --code-highlight: #f0f1ee;
+  --code-number: #b0306e;
+  --code-comment: #625e75;
+  --code-highlight: #f0edfb;
 
   /* 간격 (4px 단위) */
   --space-1: 0.25rem;
@@ -65,19 +92,19 @@
   --space-10: 2.5rem;
   --space-14: 3.5rem;
 
-  /* 모서리 — 노션처럼 작고 단정하게 (2026-10-26 디자인 다듬기) */
-  --radius-control: 0.5rem;
-  --radius-card: 0.75rem;
-  --radius-sheet: 1rem;
+  /* 모서리: 레퍼런스처럼 크고 둥글게 */
+  --radius-control: 0.875rem;
+  --radius-card: 1.25rem;
+  --radius-sheet: 1.5rem;
 
-  /* 그림자는 쓰지 않고 얇은 선으로 구분해요 */
-  --shadow-card: none;
+  /* 카드 그림자: 아주 옅게 1단계 */
+  --shadow-card: 0 1px 2px rgb(30 27 46 / 0.04), 0 4px 16px rgb(30 27 46 / 0.04);
 
   /* 레이아웃 */
   --content-max: 40rem; /* 640px */
   --gutter: 1.25rem; /* 모바일 좌우 여백 20px */
   --topbar-h: 3.5rem;
-  --tabbar-h: 3.5rem;
+  --tabbar-h: 3.75rem;
 
   --motion: 200ms;
 }
@@ -85,40 +112,47 @@
 :root[data-theme="dark"] {
   color-scheme: dark;
 
-  --primary: #2fc488;
-  --primary-strong: #2fc488;
-  --primary-button: #2fc488;
-  --primary-button-pressed: #26a673;
-  --primary-weak: #123326;
-  --on-primary: #0e1a14;
+  --primary: #a08bff;
+  --primary-strong: #b6a6ff;
+  --primary-button: #a08bff;
+  --primary-button-pressed: #8a72f5;
+  --primary-weak: #2a2347;
+  --on-primary: #15112b;
 
-  --text-strong: #f2f3f2;
-  --text-sub: #a3a8a5;
-  --text-disabled: #5c615e;
+  --text-strong: #f3f2f8;
+  --text-sub: #a9a5b8;
+  --text-disabled: #5d596c;
 
-  --bg: #121413;
-  --bg-sub: #1c1f1d;
-  --bg-pressed: #262a28;
-  --border: #2c302e;
-  --border-strong: #454a47;
+  --bg-page: #121118;
+  --bg: #1c1a26;
+  --bg-sub: #24222f;
+  --bg-pressed: #2e2b3b;
+  --border: #2f2c3b;
+  --border-strong: #464257;
   --scrim: #000000;
 
-  --correct: #2fc488;
-  --correct-strong: #2fc488;
-  --correct-weak: #123326;
+  --violet-50: #2a2347;
+  --orange-50: #33270f;
+  --pink-50: #3a1c2c;
+  --green-50: #14301f;
+  --ill-shadow: #000000;
+
+  --correct: #3ccf8e;
+  --correct-strong: #3ccf8e;
+  --correct-weak: #14301f;
   --wrong: #ff6369;
   --wrong-strong: #ff6369;
   --wrong-weak: #3a1a1c;
   --warning: #ffc53d;
   --warning-strong: #ffc53d;
-  --warning-weak: #33290f;
+  --warning-weak: #33270f;
 
-  --code-bg: #1a1c1b;
-  --code-keyword: #2fc488;
+  --code-bg: #17161f;
+  --code-keyword: #b6a6ff;
   --code-string: #f0a35e;
-  --code-number: #c49af0;
-  --code-comment: #a3a8a5;
-  --code-highlight: #262a28;
+  --code-number: #ff8fc0;
+  --code-comment: #a9a5b8;
+  --code-highlight: #2a2347;
 
   --shadow-card: none;
 }

@@ -8,6 +8,7 @@ import { recordAnswer, useAppState } from "@/lib/store";
 import { BottomCta } from "../BottomCta";
 import { ChoiceQuestionView } from "../ChoiceQuestionView";
 import { IconCheck } from "../icons";
+import { Illustration } from "../Illustration";
 import { RichText } from "../RichText";
 
 export type ReviewQuestion = { lessonId: string; lessonTitle: string; question: ChoiceQuestion };
@@ -90,9 +91,10 @@ export function ReviewPanel({ questions }: { questions: Record<string, ReviewQue
     return (
       <div>
         <h1 className="t-title-1">오답노트</h1>
-        <div className="mt-10">
-          <p className="t-title-3">아직 틀린 문제가 없어요</p>
-          <p className="t-body-2 t-sub mt-1">레슨에서 틀린 문제는 여기에 모여요. 1일·3일·7일·14일 뒤에 다시 풀면서 오래 기억하게 돼요.</p>
+        <div className="tile tint-pink mt-6 items-center px-6 py-8 text-center">
+          <Illustration name="note" tone="pink" size={80} />
+          <p className="t-title-3 mt-2">아직 틀린 문제가 없어요</p>
+          <p className="t-body-2 t-sub">레슨에서 틀린 문제는 여기에 모여요. 1일·3일·7일·14일 뒤에 다시 풀면서 오래 기억하게 돼요.</p>
         </div>
         <BottomCta label="레슨 풀러 가기" onClick={() => router.push("/learn")} tabbed />
       </div>
@@ -104,21 +106,40 @@ export function ReviewPanel({ questions }: { questions: Record<string, ReviewQue
   return (
     <div>
       <h1 className="t-title-1">오답노트</h1>
-      <p className="t-body-2 t-sub mt-1">
-        {due.length ? `오늘 복습할 문제가 ${due.length}개 있어요.` : "오늘 복습할 문제는 없어요. 다음 복습일에 다시 알려 드릴게요."}
-      </p>
-      <ul className="divided mt-6 border-y" style={{ borderColor: "var(--border)" }}>
+      <p className="t-body-2 t-sub mt-1">틀린 문제를 1·3·7·14일 뒤에 다시 풀어요.</p>
+
+      <dl className="mt-5 grid grid-cols-2 gap-3">
+        <div className="tile tint-pink">
+          <Illustration name="note" tone="pink" size={40} />
+          <div className="flex flex-col-reverse">
+            <dd className="t-title-2 tabular-nums">{due.length}개</dd>
+            <dt className="t-caption t-sub">오늘 복습할 문제</dt>
+          </div>
+        </div>
+        <div className="tile tint-green">
+          <Illustration name="trophy" tone="green" size={40} />
+          <div className="flex flex-col-reverse">
+            <dd className="t-title-2 tabular-nums">{items.filter(isGraduated).length}개</dd>
+            <dt className="t-caption t-sub">다 외운 문제</dt>
+          </div>
+        </div>
+      </dl>
+
+      <h2 className="section-title mt-6">담아 둔 문제 {items.length}개</h2>
+      <ul className="flex flex-col gap-2">
         {sorted.map((r) => {
           const rq = questions[r.questionId];
           return (
-            <li key={r.questionId} className="flex flex-col gap-0.5 py-4">
-              <p className="t-caption t-sub">
-                {rq.lessonTitle} · 틀린 횟수 {r.wrongCount}번
+            <li key={r.questionId} className="row-card flex-col items-stretch gap-0.5 py-3">
+              <p className="t-caption t-sub flex flex-wrap justify-between gap-x-2">
+                <span>
+                  {rq.lessonTitle} · 틀린 횟수 {r.wrongCount}번
+                </span>
+                <span className={isDue(r) ? "result-label-wrong" : ""}>{dueLabel(r)}</span>
               </p>
-              <p className="t-body-1">
+              <p className="t-body-2">
                 <RichText text={rq.question.prompt.join(" ")} />
               </p>
-              <p className={`t-caption ${isDue(r) ? "result-label-wrong" : "t-sub"}`}>{dueLabel(r)}</p>
             </li>
           );
         })}

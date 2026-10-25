@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IconBook, IconHome, IconNote, IconUser } from "./icons";
+import { Illustration, UNIT_ART } from "./Illustration";
 
 export const TABS = [
   { href: "/", label: "홈", Icon: IconHome },
@@ -30,17 +31,17 @@ export function TabBar() {
   );
 }
 
-export type SidebarUnit = { id: string; title: string; lessons: { id: string; title: string }[] };
+export type SidebarUnit = { id: string; order: number; title: string };
 
-/** 1024px 이상에서만 보이는 왼쪽 사이드바: 메뉴 + 유닛 목록 */
+/** 1024px 이상에서만 보이는 왼쪽 사이드바: 메뉴 + 유닛 바로가기 */
 export function Sidebar({ units }: { units: SidebarUnit[] }) {
   const pathname = usePathname();
   return (
-    <aside
-      className="fixed inset-y-0 left-0 hidden w-64 overflow-y-auto border-r px-3 py-6 lg:block"
-      style={{ borderColor: "var(--border)", background: "var(--bg-sub)" }}
-    >
-      <p className="t-title-3 px-3">코드 영문법</p>
+    <aside className="fixed inset-y-0 left-0 hidden w-64 overflow-y-auto px-3 py-6 lg:block" style={{ background: "var(--bg)", boxShadow: "1px 0 0 var(--border)" }}>
+      <p className="t-title-3 flex items-center gap-2 px-3">
+        <Illustration name="book" tone="violet" size={32} />
+        코드 영문법
+      </p>
       <nav className="mt-6 flex flex-col gap-1" aria-label="주요 메뉴">
         {TABS.map(({ href, label, Icon }) => {
           const active = isActive(pathname, href);
@@ -49,11 +50,11 @@ export function Sidebar({ units }: { units: SidebarUnit[] }) {
               key={href}
               href={href}
               aria-current={active ? "page" : undefined}
-              className="t-body-2 flex min-h-11 items-center gap-2.5 rounded-md px-3 py-1.5 no-underline"
+              className="t-body-2 flex min-h-11 items-center gap-2.5 rounded-xl px-3 py-1.5 no-underline"
               style={{
-                color: active ? "var(--text-strong)" : "var(--text-sub)",
-                background: active ? "var(--bg-pressed)" : undefined,
-                fontWeight: active ? 600 : 500,
+                color: active ? "var(--primary-strong)" : "var(--text-sub)",
+                background: active ? "var(--primary-weak)" : undefined,
+                fontWeight: active ? 700 : 500,
               }}
             >
               <Icon size={20} />
@@ -62,30 +63,28 @@ export function Sidebar({ units }: { units: SidebarUnit[] }) {
           );
         })}
       </nav>
-      <div className="mt-8">
-        <p className="t-caption t-sub px-3">유닛</p>
-        <ul className="mt-2 flex flex-col gap-3">
-          {units.map((u) => (
+      <p className="t-caption t-sub mt-8 px-3 font-semibold">유닛</p>
+      <ul className="mt-2 flex flex-col gap-1">
+        {units.map((u) => {
+          const art = UNIT_ART[u.id] ?? { name: "book" as const, tone: "violet" as const };
+          const active = pathname === `/learn/${u.id}`;
+          return (
             <li key={u.id}>
-              <p className="t-body-2 px-3 font-semibold">{u.title}</p>
-              <ul className="mt-1">
-                {u.lessons.map((l) => (
-                  <li key={l.id}>
-                    <Link
-                      href={`/lesson/${l.id}`}
-                      className="t-body-2 block truncate rounded-lg px-3 py-2 no-underline"
-                      style={{ color: "var(--text-sub)", wordBreak: "normal" }}
-                      title={l.title}
-                    >
-                      {l.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <Link
+                href={`/learn/${u.id}`}
+                aria-current={active ? "page" : undefined}
+                className="t-body-2 flex min-h-11 items-center gap-2.5 rounded-xl px-2 py-1 no-underline"
+                style={{ color: "var(--text-strong)", background: active ? "var(--bg-sub)" : undefined }}
+              >
+                <Illustration name={art.name} tone={art.tone} size={28} className="flex-none" />
+                <span className="min-w-0 truncate" style={{ wordBreak: "normal" }} title={u.title}>
+                  {u.title}
+                </span>
+              </Link>
             </li>
-          ))}
-        </ul>
-      </div>
+          );
+        })}
+      </ul>
     </aside>
   );
 }

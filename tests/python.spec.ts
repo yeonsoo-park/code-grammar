@@ -4,15 +4,15 @@
 import { expect, test } from "@playwright/test";
 
 const LESSON = "py-01-variables";
-const TRANSLATE_STEP = 15; // 작문 2단계: 번역하기
+const TRANSLATE_STEP = 20; // 작문 2단계: 번역하기
 
 test("번역 과제: 정답 코드가 실제 Python으로 실행되고 모든 기준을 통과해요", async ({ page }) => {
   await page.goto("/");
   await page.evaluate(
-    ([id, s]) => localStorage.setItem("cg:v1:state", JSON.stringify({ progress: { [id]: { step: s, totalSteps: 17 } }, reviews: {}, studyDays: [] })),
+    ([id, s]) => localStorage.setItem("cg:v1:state", JSON.stringify({ progress: { [id]: { step: s, totalSteps: 22 } }, reviews: {}, studyDays: [] })),
     [LESSON, TRANSLATE_STEP] as const,
   );
-  await page.goto(`/lesson/${LESSON}`);
+  await page.goto(`/lesson/${LESSON}/play`);
 
   const editor = page.locator(".cm-content");
   await editor.click();

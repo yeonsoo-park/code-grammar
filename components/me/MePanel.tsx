@@ -2,10 +2,11 @@
 
 import { useState, useSyncExternalStore } from "react";
 import { resetAll, streak, useAppState } from "@/lib/store";
+import { Illustration } from "../Illustration";
 
 type Theme = "system" | "light" | "dark";
 const THEMES: { value: Theme; label: string }[] = [
-  { value: "system", label: "시스템 설정 따르기" },
+  { value: "system", label: "시스템" },
   { value: "light", label: "라이트" },
   { value: "dark", label: "다크" },
 ];
@@ -48,10 +49,10 @@ export function MePanel() {
 
       <section className="mt-6" aria-labelledby="theme-title">
         <h2 id="theme-title" className="section-title">화면 테마</h2>
-        <fieldset className="flex flex-col gap-2">
+        <fieldset className="grid grid-cols-3 gap-2">
           <legend className="sr-only">화면 테마</legend>
           {THEMES.map((t) => (
-            <label key={t.value} className="choice items-center" data-selected={theme === t.value}>
+            <label key={t.value} className="choice min-h-12 flex-col items-center justify-center gap-1 p-3 text-center t-body-2" data-selected={theme === t.value}>
               <input
                 type="radio"
                 name="theme"
@@ -59,7 +60,6 @@ export function MePanel() {
                 checked={theme === t.value}
                 onChange={() => applyTheme(t.value)}
               />
-              <span className="choice-mark" aria-hidden="true" />
               <span>{t.label}</span>
             </label>
           ))}
@@ -69,14 +69,20 @@ export function MePanel() {
       <section className="mt-10" aria-labelledby="record-title">
         <h2 id="record-title" className="section-title">학습 기록</h2>
         {state ? (
-          <dl className="grid grid-cols-2 border-y py-4" style={{ borderColor: "var(--border)" }}>
-            <div>
-              <dt className="t-caption t-sub">연속 학습</dt>
-              <dd className="t-title-2 mt-0.5 tabular-nums">{streak(state.studyDays)}일</dd>
+          <dl className="grid grid-cols-2 gap-3">
+            <div className="tile tint-orange">
+              <Illustration name="flame" tone="orange" size={40} />
+              <div className="flex flex-col-reverse">
+                <dd className="t-title-2 tabular-nums">{streak(state.studyDays)}일</dd>
+                <dt className="t-caption t-sub">연속 학습</dt>
+              </div>
             </div>
-            <div>
-              <dt className="t-caption t-sub">공부한 날</dt>
-              <dd className="t-title-2 mt-0.5 tabular-nums">{state.studyDays.length}일</dd>
+            <div className="tile tint-violet">
+              <Illustration name="clock" tone="violet" size={40} />
+              <div className="flex flex-col-reverse">
+                <dd className="t-title-2 tabular-nums">{state.studyDays.length}일</dd>
+                <dt className="t-caption t-sub">공부한 날</dt>
+              </div>
             </div>
           </dl>
         ) : (

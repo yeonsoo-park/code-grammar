@@ -44,7 +44,7 @@ export function ChoiceQuestionView({
   return (
     <div>
       {header}
-      <p className="eyebrow mb-2">{QUESTION_KIND_LABEL[question.kind]}</p>
+      <p className="badge mb-3">{QUESTION_KIND_LABEL[question.kind]}</p>
       <fieldset>
         <legend className="t-title-2 mb-5">
           <span className="prose-flow block">
@@ -137,14 +137,14 @@ export function ChoiceQuestionView({
           onAction={onNext}
         >
           <Paragraphs items={question.explanation} />
-          <div className="divided mt-5 border-t" style={{ borderColor: "var(--border)" }}>
+          <div className="mt-5 flex flex-col gap-2">
             {question.choices
               .map((c, i) => ({ c, i }))
               .sort((a, b) => Number(b.c.id === question.answer) - Number(a.c.id === question.answer))
               .map(({ c, i }) => {
                 const isAnswer = c.id === question.answer;
                 return (
-                  <div key={c.id} className="py-3">
+                  <div key={c.id} className="card-sub py-3">
                     <p className={`t-caption mb-0.5 flex items-center gap-1 font-semibold ${isAnswer ? "result-label-correct" : "t-sub"}`}>
                       {isAnswer ? <IconCheck size={16} /> : <IconX size={16} />}
                       {LETTERS[i]} {isAnswer ? "정답인 이유" : "틀린 이유"}

@@ -33,6 +33,17 @@ function ratio(a: string, b: string) {
 // [글자, 배경, 기준, 설명]  기준: 4.5 = 본문, 3 = 큰 글씨·아이콘·테두리
 const pairs: [string, string, number, string][] = [
   ["text-strong", "bg", 4.5, "본문"],
+  ["text-strong", "bg-page", 4.5, "페이지 바탕 본문"],
+  ["text-sub", "bg-page", 4.5, "페이지 바탕 보조 설명"],
+  ["primary-strong", "bg-page", 4.5, "페이지 바탕 강조 글자"],
+  ["text-strong", "violet-50", 4.5, "라일락 카드 글자"],
+  ["text-sub", "violet-50", 4.5, "라일락 카드 보조 글자"],
+  ["text-strong", "orange-50", 4.5, "오렌지 카드 글자"],
+  ["text-sub", "orange-50", 4.5, "오렌지 카드 보조 글자"],
+  ["text-strong", "pink-50", 4.5, "핑크 카드 글자"],
+  ["text-sub", "pink-50", 4.5, "핑크 카드 보조 글자"],
+  ["text-strong", "green-50", 4.5, "그린 카드 글자"],
+  ["text-sub", "green-50", 4.5, "그린 카드 보조 글자"],
   ["text-strong", "bg-sub", 4.5, "카드 안 본문"],
   ["text-sub", "bg", 4.5, "보조 설명"],
   ["text-sub", "bg-sub", 4.5, "카드 안 보조 설명"],

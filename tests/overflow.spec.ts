@@ -9,11 +9,11 @@ import { expect, test, type Page } from "@playwright/test";
 
 const WIDTHS = [320, 360, 390, 768, 1440];
 const LESSON = "py-01-variables";
-const LESSON_STEPS = 17; // 개념 5 + 문제 4 + 독해 1 + 독해 문제 4 + 작문 3 (완료 화면 제외)
+const LESSON_STEPS = 22; // 개념 10(설명·예시 5쌍) + 문제 4 + 독해 1 + 독해 문제 4 + 작문 3 (완료 화면 제외)
 
 // 넘침 검사용 화면(/dev/stress)은 개발 서버에만 있어요
 const REMOTE = !!process.env.BASE_URL;
-const PAGES = ["/", "/learn", "/review", "/me", ...(REMOTE ? [] : ["/dev/stress"])];
+const PAGES = ["/", "/learn", "/learn/python-basics", "/learn/efficiency", `/lesson/${LESSON}`, "/review", "/me", ...(REMOTE ? [] : ["/dev/stress"])];
 const STRESS = REMOTE ? [] : ["/dev/stress"];
 
 async function noOverflow(page: Page, label: string) {
@@ -35,7 +35,7 @@ async function openLessonStep(page: Page, step: number) {
       localStorage.setItem("cg:v1:state", JSON.stringify({ progress: { [id]: { step: s, totalSteps: total } }, reviews: {}, studyDays: [] })),
     [LESSON, step, LESSON_STEPS] as const,
   );
-  await page.goto(`/lesson/${LESSON}`);
+  await page.goto(`/lesson/${LESSON}/play`);
   await page.locator("main h2").first().waitFor();
 }
 
@@ -79,7 +79,7 @@ test.describe("확대·글자 크기", () => {
         await noOverflow(page, `zoom200 ${width} ${path}`);
         await shot(page, `zoom200-${width * 2}${path === "/" ? "-home" : path.replaceAll("/", "-")}`);
       }
-      for (const step of [1, 5, 9, 15]) {
+      for (const step of [1, 6, 14, 20]) {
         await openLessonStep(page, step);
         await noOverflow(page, `zoom200 ${width} 레슨 ${step}`);
         await shot(page, `zoom200-${width * 2}-lesson-${step}`);
@@ -96,7 +96,7 @@ test.describe("확대·글자 크기", () => {
       await noOverflow(page, `큰 글자 ${path}`);
       await shot(page, `bigtext-360${path === "/" ? "-home" : path.replaceAll("/", "-")}`);
     }
-    for (const step of [1, 5, 9, 15]) {
+    for (const step of [1, 6, 14, 20]) {
       await openLessonStep(page, step);
       await bigText();
       await noOverflow(page, `큰 글자 레슨 ${step}`);
@@ -107,7 +107,7 @@ test.describe("확대·글자 크기", () => {
   test("다크 모드 (390px)", async ({ page }) => {
     await page.emulateMedia({ colorScheme: "dark" });
     await page.setViewportSize({ width: 390, height: 800 });
-    for (const step of [0, 5, 9]) {
+    for (const step of [0, 1, 10, 14]) {
       await openLessonStep(page, step);
       await noOverflow(page, `다크 레슨 ${step}`);
       await shot(page, `dark-390-lesson-${step}`);

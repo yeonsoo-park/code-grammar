@@ -8,14 +8,15 @@ import { preloadPython } from "@/lib/runners/python";
 import { recordAnswer, saveProgress, useAppState } from "@/lib/store";
 import { BottomCta } from "../BottomCta";
 import { ChoiceQuestionView } from "../ChoiceQuestionView";
-import { IconBack, IconCheck } from "../icons";
+import { IconBack } from "../icons";
+import { Illustration, STAGE_ART } from "../Illustration";
 import { STAGES, StageBar } from "../StageBar";
-import { ConceptView } from "./ConceptView";
+import { ConceptView, type ConceptPart } from "./ConceptView";
 import { ReadingView } from "./ReadingView";
 import { CodeTaskView, FillTaskView } from "./WritingTaskView";
 
 type Step =
-  | { stage: 0; kind: "concept"; index: number }
+  | { stage: 0; kind: "concept"; index: number; part: ConceptPart }
   | { stage: 1 | 3; kind: "question"; index: number }
   | { stage: 2; kind: "reading" }
   | { stage: 4; kind: "writing"; index: number }
@@ -23,7 +24,10 @@ type Step =
 
 function buildSteps(l: Lesson): Step[] {
   return [
-    ...l.concept.screens.map((_, index) => ({ stage: 0 as const, kind: "concept" as const, index })),
+    // 예시 코드가 있는 개념은 "설명 → 예시" 두 장으로 나눠서 스크롤을 줄여요
+    ...l.concept.screens.flatMap((s, index) =>
+      (s.code ? (["explain", "example"] as const) : (["all"] as const)).map((part) => ({ stage: 0 as const, kind: "concept" as const, index, part })),
+    ),
     ...l.quiz.questions.map((_, index) => ({ stage: 1 as const, kind: "question" as const, index })),
     { stage: 2 as const, kind: "reading" as const },
     ...l.readingQuiz.questions.map((_, index) => ({ stage: 3 as const, kind: "question" as const, index })),
@@ -65,7 +69,7 @@ function Player({ lesson, steps, initialStep }: { lesson: Lesson; steps: Step[];
   }, [id, stepIndex, steps.length, step.kind, step.stage, lesson.meta.packages]);
 
   const next = () => setStepIndex((i) => Math.min(i + 1, steps.length - 1));
-  const back = () => (stepIndex > 0 ? setStepIndex((i) => i - 1) : router.push("/learn"));
+  const back = () => (stepIndex > 0 ? setStepIndex((i) => i - 1) : router.push(`/lesson/${id}`));
   const onAnswered = (questionId: string) => (correct: boolean) => {
     recordAnswer(id, questionId, correct);
     setScore((s) => (correct ? { ...s, correct: s.correct + 1 } : { ...s, wrong: s.wrong + 1 }));
@@ -76,9 +80,9 @@ function Player({ lesson, steps, initialStep }: { lesson: Lesson; steps: Step[];
 
   return (
     <div className="min-h-dvh">
-      <header className="sticky top-0 z-20" style={{ background: "var(--bg)" }}>
+      <header className="page-header sticky top-0 z-20">
         <div className="content flex items-center gap-2 py-2">
-          <button type="button" className="icon-btn -ml-2" onClick={back} aria-label={stepIndex > 0 ? "이전 화면" : "학습 목록으로"}>
+          <button type="button" className="icon-btn -ml-2" onClick={back} aria-label={stepIndex > 0 ? "이전 화면" : "레슨 소개로"}>
             <IconBack />
           </button>
           <div className="min-w-0 flex-1">
@@ -88,13 +92,16 @@ function Player({ lesson, steps, initialStep }: { lesson: Lesson; steps: Step[];
       </header>
 
       <main className="content pb-6 pt-5">
-        <h2 ref={topRef} tabIndex={-1} className="t-caption t-sub mb-3 flex flex-wrap items-baseline justify-between gap-x-3 outline-none">
+        <h2 ref={topRef} tabIndex={-1} className="t-caption t-sub mb-4 flex items-center gap-2 outline-none">
           {step.kind === "finish" ? (
             lesson.meta.title
           ) : (
             <>
-              <span className="min-w-0">
-                {stage + 1}단계&nbsp;{stageInfo.name}
+              <Illustration name={STAGE_ART[stage].name} tone={STAGE_ART[stage].tone} size={32} className="flex-none" />
+              <span className="min-w-0 flex-1">
+                <span className="font-semibold" style={{ color: "var(--primary-strong)" }}>
+                  {stage + 1}단계&nbsp;{stageInfo.name}
+                </span>
                 <span aria-hidden="true"> · </span>
                 <span className="sr-only">, </span>영어의 {stageInfo.english}
               </span>
@@ -130,10 +137,10 @@ function StepView({
   switch (step.kind) {
     case "concept": {
       const screens = lesson.concept.screens;
-      const last = step.index === screens.length - 1;
+      const last = step.index === screens.length - 1 && step.part !== "explain";
       return (
         <>
-          <ConceptView screen={screens[step.index]} />
+          <ConceptView screen={screens[step.index]} part={step.part} />
           <BottomCta label={last ? "문제 풀러 가기" : "다음"} onClick={next} />
         </>
       );
@@ -176,43 +183,44 @@ function FinishView({ lesson, score }: { lesson: Lesson; score: { correct: numbe
   const total = score.correct + score.wrong;
   return (
     <div>
-      <p className="result-label-correct t-body-2 flex items-center gap-1.5">
-        <IconCheck size={18} /> 레슨을 끝냈어요
-      </p>
-      <h1 className="t-title-1 mt-2">{lesson.meta.title}</h1>
-      <p className="t-body-1 t-sub mt-2">{lesson.meta.summary}</p>
+      <div className="flex flex-col items-center text-center">
+        <Illustration name="trophy" tone="violet" size={88} />
+        <p className="badge mt-2">레슨을 끝냈어요</p>
+        <h1 className="t-title-1 mt-2">{lesson.meta.title}</h1>
+        <p className="t-body-2 t-sub mt-1">{lesson.meta.summary}</p>
+      </div>
 
       {total > 0 && (
-        <dl className="mt-8 grid grid-cols-2 border-y py-4" style={{ borderColor: "var(--border)" }}>
-          <div>
+        <dl className="mt-6 grid grid-cols-2 gap-2">
+          <div className="tile tint-green">
             <dt className="t-caption t-sub">맞힌 문제</dt>
-            <dd className="t-title-2 mt-0.5 tabular-nums">
+            <dd className="t-title-2 tabular-nums">
               {score.correct}&nbsp;/&nbsp;{total}
             </dd>
           </div>
-          <div>
+          <div className="tile tint-pink">
             <dt className="t-caption t-sub">오답노트에 담은 문제</dt>
-            <dd className="t-title-2 mt-0.5 tabular-nums">{score.wrong}개</dd>
+            <dd className="t-title-2 tabular-nums">{score.wrong}개</dd>
           </div>
         </dl>
       )}
 
-      <section className="mt-8">
+      <section className="mt-6">
         <h2 className="section-title">이번 레슨의 단어장</h2>
-        <dl className="divided">
+        <dl className="card grid grid-cols-[auto_1fr] gap-x-4 gap-y-2.5 p-4">
           {lesson.meta.keywords.map((k) => (
-            <div key={k.term} className="grid gap-x-4 gap-y-0.5 py-3 sm:grid-cols-[7rem_1fr]">
+            <div key={k.term} className="contents">
               <dt>
                 <code className="inline-code">{k.term}</code>
               </dt>
-              <dd className="t-body-2 t-sub">{k.meaning}</dd>
+              <dd className="t-body-2 t-sub min-w-0">{k.meaning}</dd>
             </div>
           ))}
         </dl>
       </section>
 
       {score.wrong > 0 && (
-        <p className="t-body-2 mt-6">
+        <p className="t-body-2 t-sub mt-4">
           틀린 문제는 내일 <Link href="/review">오답노트</Link>에서 다시 만나요.
         </p>
       )}

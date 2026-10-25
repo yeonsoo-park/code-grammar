@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { LessonPlayer } from "@/components/lesson/LessonPlayer";
+import { LessonIntro } from "@/components/lesson/LessonIntro";
 import { getAllLessons, getLesson } from "@/lib/content/load";
 
-// 레슨은 빌드 때 미리 만들어 둬요. 기다렸다가 한 번에 보내야
-// 없는 레슨 주소에 404 상태 코드를 제대로 돌려줄 수 있어요.
 export const instant = false;
 
 export function generateStaticParams() {
@@ -16,9 +14,15 @@ export async function generateMetadata({ params }: PageProps<"/lesson/[lessonId]
   return { title: getLesson(lessonId)?.meta.title ?? "레슨" };
 }
 
-export default async function LessonPage({ params }: PageProps<"/lesson/[lessonId]">) {
+export default async function LessonIntroPage({ params }: PageProps<"/lesson/[lessonId]">) {
   const { lessonId } = await params;
   const lesson = getLesson(lessonId);
   if (!lesson) notFound();
-  return <LessonPlayer lesson={lesson} />;
+  const { meta, concept, quiz, reading, readingQuiz, writing } = lesson;
+  return (
+    <LessonIntro
+      meta={meta}
+      counts={[concept.screens.length, quiz.questions.length, reading.code.code.split("\n").length, readingQuiz.questions.length, writing.tasks.length]}
+    />
+  );
 }

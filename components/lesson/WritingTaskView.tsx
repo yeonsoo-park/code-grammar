@@ -71,7 +71,7 @@ export function FillTaskView({ task, packages, onNext }: { task: FillTask; packa
 
   return (
     <div>
-      <p className="eyebrow mb-2">{LEVEL_LABEL.fill}</p>
+      <p className="badge mb-3">{LEVEL_LABEL.fill}</p>
       <h1 className="t-title-2 mb-3">{task.title}</h1>
       <Paragraphs items={task.prompt} />
 
@@ -195,11 +195,11 @@ export function CodeTaskView({ task, packages, onNext }: { task: CodeTask; packa
 
   return (
     <div>
-      <p className="eyebrow mb-2">{LEVEL_LABEL[task.kind]}</p>
+      <p className="badge mb-3">{LEVEL_LABEL[task.kind]}</p>
       <h1 className="t-title-2 mb-3">{task.title}</h1>
       <Paragraphs items={task.prompt} />
 
-      <div className="mt-6">
+      <div className="card mt-5">
         <h2 className="section-title">요구사항</h2>
         <ol className="flex list-decimal flex-col gap-1.5 pl-5 marker:text-[var(--text-sub)]">
           {task.requirements.map((r, i) => (
