@@ -11,7 +11,10 @@ const WIDTHS = [320, 360, 390, 768, 1440];
 const LESSON = "py-01-variables";
 const LESSON_STEPS = 17; // 개념 5 + 문제 4 + 독해 1 + 독해 문제 4 + 작문 3 (완료 화면 제외)
 
-const PAGES = ["/", "/learn", "/review", "/me", "/dev/stress"];
+// 넘침 검사용 화면(/dev/stress)은 개발 서버에만 있어요
+const REMOTE = !!process.env.BASE_URL;
+const PAGES = ["/", "/learn", "/review", "/me", ...(REMOTE ? [] : ["/dev/stress"])];
+const STRESS = REMOTE ? [] : ["/dev/stress"];
 
 async function noOverflow(page: Page, label: string) {
   await page.waitForLoadState("load");
@@ -21,7 +24,7 @@ async function noOverflow(page: Page, label: string) {
 }
 
 async function shot(page: Page, name: string) {
-  await page.screenshot({ path: `tests/screenshots/${name}.png`, fullPage: true });
+  await page.screenshot({ path: `tests/screenshots/${REMOTE ? "prod-" : ""}${name}.png`, fullPage: true });
 }
 
 /** 저장된 진도를 n번째 화면으로 맞춰서 레슨 중간 화면을 바로 열어요 */
@@ -46,6 +49,7 @@ for (const width of WIDTHS) {
         await noOverflow(page, `${width} ${path}`);
         await shot(page, `${width}${path === "/" ? "-home" : path.replaceAll("/", "-")}`);
       }
+      if (REMOTE) return;
       // 긴 선택지 채점 → 해설 시트
       await page.goto("/dev/stress");
       await page.locator("label.choice").nth(1).click();
@@ -70,7 +74,7 @@ test.describe("확대·글자 크기", () => {
   for (const width of [180, 720]) {
     test(`200% 확대 (원래 폭 ${width * 2}px)`, async ({ page }) => {
       await page.setViewportSize({ width, height: 600 });
-      for (const path of ["/", "/dev/stress"]) {
+      for (const path of ["/", ...STRESS]) {
         await page.goto(path);
         await noOverflow(page, `zoom200 ${width} ${path}`);
         await shot(page, `zoom200-${width * 2}${path === "/" ? "-home" : path.replaceAll("/", "-")}`);
@@ -86,7 +90,7 @@ test.describe("확대·글자 크기", () => {
   test("시스템 글자 크기 최대 (360px, 기본 글자 200%)", async ({ page }) => {
     await page.setViewportSize({ width: 360, height: 800 });
     const bigText = () => page.addStyleTag({ content: "html { font-size: 200% !important; }" });
-    for (const path of ["/", "/learn", "/dev/stress"]) {
+    for (const path of ["/", "/learn", ...STRESS]) {
       await page.goto(path);
       await bigText();
       await noOverflow(page, `큰 글자 ${path}`);
