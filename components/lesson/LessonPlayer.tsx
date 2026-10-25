@@ -42,7 +42,9 @@ export function LessonPlayer({ lesson }: { lesson: Lesson }) {
   const steps = useMemo(() => buildSteps(lesson), [lesson]);
   if (!state) return <LessonSkeleton />;
   const saved = state.progress[lesson.meta.id];
-  const start = saved && !saved.completedAt ? Math.min(saved.step, steps.length - 2) : 0;
+  // 레슨 구성(화면 수)이 바뀌었으면 예전 진도는 다른 화면을 가리키니까 처음부터 시작해요
+  const sameShape = saved?.totalSteps === steps.length - 1;
+  const start = saved && sameShape && !saved.completedAt ? Math.min(saved.step, steps.length - 2) : 0;
   return <Player lesson={lesson} steps={steps} initialStep={start} />;
 }
 
