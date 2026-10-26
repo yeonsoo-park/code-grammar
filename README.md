@@ -45,3 +45,4 @@ docs/             데이터셋, 콘텐츠 작성법, AX 학습 로그
 - [연습 데이터셋](docs/dataset.md)
 - [AX 학습 로그](docs/ax-log.md)
 - [Supabase 설정 체크리스트](docs/setup-supabase.md)
+- [Claude API 설정 체크리스트 (AI 첨삭)](docs/setup-claude-api.md)
