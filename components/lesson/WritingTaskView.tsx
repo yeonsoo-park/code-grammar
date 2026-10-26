@@ -10,6 +10,7 @@ import { CodeBlock, OutputBlock } from "../CodeBlock";
 import { CodeEditor, KeyBar, type EditorHandle } from "../CodeEditor";
 import { IconBulb, IconCheck, IconX } from "../icons";
 import { Paragraphs, RichText } from "../RichText";
+import { AiReview } from "./AiReview";
 import { PythonLoading, PythonResult } from "./PythonResult";
 
 const LEVEL_LABEL = { fill: "1단계 빈칸 채우기", translate: "2단계 번역하기", free: "3단계 자유 작성" };
@@ -169,7 +170,7 @@ export function FillTaskView({ task, packages, onNext }: { task: FillTask; packa
 
 /* ───────────── 2·3단계: 번역하기 · 자유 작성 ───────────── */
 
-export function CodeTaskView({ task, packages, onNext }: { task: CodeTask; packages: string[]; onNext: () => void }) {
+export function CodeTaskView({ task, lessonId, packages, onNext }: { task: CodeTask; lessonId: string; packages: string[]; onNext: () => void }) {
   useKeyboardInset();
   const [code, setCode] = useState(task.starter);
   const [run, setRun] = useState<RunState>({ status: "idle" });
@@ -283,7 +284,7 @@ export function CodeTaskView({ task, packages, onNext }: { task: CodeTask; packa
           <div className="mt-4">
             <CodeBlock code={task.solution} label="모범 답안과 비교해 보세요" />
           </div>
-          <p className="t-body-2 t-sub mt-4">정확성·가독성·효율성 점수와 고친 코드를 보여주는 AI 첨삭은 곧 열려요.</p>
+          <AiReview lessonId={lessonId} taskId={task.id} code={code} stdout={result.stdout} />
         </BottomSheet>
       ) : (
         <BottomCta

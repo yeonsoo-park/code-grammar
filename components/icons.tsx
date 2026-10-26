@@ -1,7 +1,7 @@
 /** 아이콘 (이모지 대신 SVG). 모두 currentColor를 써서 글자색을 따라가요. */
-type P = { className?: string; size?: number };
+type P = { className?: string; size?: number; style?: React.CSSProperties };
 
-function Svg({ size = 24, className, children }: P & { children: React.ReactNode }) {
+function Svg({ size = 24, className, style, children }: P & { children: React.ReactNode }) {
   return (
     <svg
       width={size}
@@ -15,6 +15,7 @@ function Svg({ size = 24, className, children }: P & { children: React.ReactNode
       aria-hidden="true"
       focusable="false"
       className={className}
+      style={style}
     >
       {children}
     </svg>

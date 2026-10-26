@@ -172,7 +172,7 @@ function StepView({
       return task.kind === "fill" ? (
         <FillTaskView task={task} packages={lesson.meta.packages} onNext={next} />
       ) : (
-        <CodeTaskView task={task} packages={lesson.meta.packages} onNext={next} />
+        <CodeTaskView task={task} lessonId={lesson.meta.id} packages={lesson.meta.packages} onNext={next} />
       );
     }
     case "finish":
