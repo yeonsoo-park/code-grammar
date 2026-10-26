@@ -2,27 +2,24 @@
 
 /**
  * 기기 안(localStorage)에 학습 기록을 저장해요.
- * M3에서 Supabase로 옮길 때도 이 파일의 함수 모양은 그대로 두고, 안쪽만 바꿀 예정이에요.
+ * 로그인하면 lib/sync.ts 가 바뀔 때마다 서버(Supabase)에 올리고, 다른 기기 기록과 합쳐요.
+ * 기기 저장은 그대로 두기 때문에 오프라인에서도 계속 공부할 수 있어요.
  * 저장이 막힌 환경(사생활 보호 모드 등)에서도 앱이 멈추지 않게 모든 접근을 try/catch로 감싸요.
  */
 import { useSyncExternalStore } from "react";
-import { nextReview, type ReviewItem } from "./srs";
+import type { AppState, LessonProgress } from "./merge";
+import { nextReview } from "./srs";
 
 const KEY = "cg:v1:state";
 
-export type LessonProgress = { step: number; totalSteps: number; completedAt?: string };
-
-export type AppState = {
-  progress: Record<string, LessonProgress>;
-  reviews: Record<string, ReviewItem>;
-  /** 공부한 날짜 (YYYY-MM-DD, 기기 시간 기준) */
-  studyDays: string[];
-};
+export type { AppState, LessonProgress } from "./merge";
 
 const EMPTY: AppState = { progress: {}, reviews: {}, studyDays: [] };
 
 let cache: AppState | null = null;
 const listeners = new Set<() => void>();
+/** 사용자가 기록을 바꿨을 때만 불려요 (동기화가 서버에 올릴 때 써요) */
+const changeListeners = new Set<(s: AppState) => void>();
 
 function read(): AppState {
   if (cache) return cache;
@@ -35,7 +32,7 @@ function read(): AppState {
   return cache!;
 }
 
-function write(next: AppState) {
+function write(next: AppState, { fromSync = false } = {}) {
   cache = next;
   try {
     localStorage.setItem(KEY, JSON.stringify(next));
@@ -43,6 +40,21 @@ function write(next: AppState) {
     // 저장이 막혀 있어도 이번 방문 동안은 메모리에서 계속 써요
   }
   listeners.forEach((l) => l());
+  if (!fromSync) changeListeners.forEach((l) => l(next));
+}
+
+export function getState(): AppState {
+  return read();
+}
+
+/** 서버에서 받아 합친 기록으로 바꿔요 (다시 서버로 올리지는 않아요) */
+export function replaceStateFromSync(next: AppState) {
+  write(next, { fromSync: true });
+}
+
+export function onUserChange(l: (s: AppState) => void) {
+  changeListeners.add(l);
+  return () => changeListeners.delete(l);
 }
 
 function subscribe(l: () => void) {
@@ -83,7 +95,8 @@ export function saveProgress(lessonId: string, step: number, totalSteps: number,
   const p: LessonProgress = {
     step: Math.max(step, completed ? totalSteps : 0),
     totalSteps,
-    completedAt: completed ? new Date().toISOString() : prev?.completedAt,
+    completedAt: completed ? (prev?.completedAt ?? new Date().toISOString()) : prev?.completedAt,
+    updatedAt: new Date().toISOString(),
   };
   write(markStudied({ ...s, progress: { ...s.progress, [lessonId]: p } }));
 }

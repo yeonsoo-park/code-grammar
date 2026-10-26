@@ -10,7 +10,8 @@
     "verify:content": "tsx scripts/verify-content.ts",
     "check:contrast": "tsx scripts/check-contrast.ts",
     "dataset": "python3 scripts/generate_dataset.py",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:unit": "tsx --test tests/merge.test.ts"
   },
   "dependencies": {
     "@codemirror/commands": "^6.11.1",
@@ -19,6 +20,7 @@
     "@codemirror/state": "^6.7.6",
     "@codemirror/view": "^6.43.15",
     "@lezer/highlight": "^1.2.5",
+    "@supabase/supabase-js": "^2.118.0",
     "d2coding": "^1.3.2",
     "next": "16.4.3",
     "pretendard": "^1.3.9",

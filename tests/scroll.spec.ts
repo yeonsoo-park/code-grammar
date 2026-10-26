@@ -11,6 +11,10 @@ const LESSON_STEPS = 22;
 
 test.use({ viewport: { width: 390, height: 844 } });
 
+test.beforeEach(async ({ page }) => {
+  await page.route("**/cdn.jsdelivr.net/pyodide/**", (route) => route.abort());
+});
+
 test("스크롤 길이", async ({ page }) => {
   const rows: string[] = [];
   const ratio = () => page.evaluate(() => document.documentElement.scrollHeight / window.innerHeight);

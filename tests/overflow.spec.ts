@@ -13,8 +13,13 @@ const LESSON_STEPS = 22; // 개념 10(설명·예시 5쌍) + 문제 4 + 독해 1
 
 // 넘침 검사용 화면(/dev/stress)은 개발 서버에만 있어요
 const REMOTE = !!process.env.BASE_URL;
-const PAGES = ["/", "/learn", "/learn/python-basics", "/learn/efficiency", `/lesson/${LESSON}`, "/review", "/me", ...(REMOTE ? [] : ["/dev/stress"])];
+const PAGES = ["/", "/learn", "/learn/python-basics", "/learn/efficiency", `/lesson/${LESSON}`, "/review", "/me", "/login", ...(REMOTE ? [] : ["/dev/stress"])];
 const STRESS = REMOTE ? [] : ["/dev/stress"];
+
+// 넘침 검사에는 Python이 필요 없어요. 화면마다 Pyodide(약 10MB)를 받으면 느려져서 막아 둬요.
+test.beforeEach(async ({ page }) => {
+  await page.route("**/cdn.jsdelivr.net/pyodide/**", (route) => route.abort());
+});
 
 async function noOverflow(page: Page, label: string) {
   await page.waitForLoadState("load");
@@ -44,6 +49,7 @@ for (const width of WIDTHS) {
     test.use({ viewport: { width, height: 800 } });
 
     test("탭 화면 + 넘침 검사용 화면", async ({ page }) => {
+      test.setTimeout(240_000); // 화면 8개 + 채점 화면
       for (const path of PAGES) {
         await page.goto(path);
         await noOverflow(page, `${width} ${path}`);
@@ -60,6 +66,7 @@ for (const width of WIDTHS) {
     });
 
     test("레슨 모든 화면", async ({ page }) => {
+      test.setTimeout(240_000); // 22개 화면을 차례로 열어요
       for (let step = 0; step < LESSON_STEPS; step++) {
         await openLessonStep(page, step);
         await noOverflow(page, `${width} 레슨 ${step}번 화면`);

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 import "d2coding/d2coding-subset.css";
 import "./globals.css";
+import { SyncStarter } from "@/components/SyncStarter";
 
 export const metadata: Metadata = {
   title: { default: "코드 영문법", template: "%s · 코드 영문법" },
@@ -28,7 +29,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body>{children}</body>
+      <body>
+        <SyncStarter />
+        {children}
+      </body>
     </html>
   );
 }
