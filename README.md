@@ -19,6 +19,7 @@ npm run dev
 | `npm run dev` | 개발 서버 실행 |
 | `npm run verify:content` | 레슨 JSON 형식 검사 + 예시 코드를 실제로 실행해서 출력 확인 |
 | `npm run check:contrast` | 디자인 토큰 색 대비(WCAG AA) 계산 |
+| `npm run test:unit` | 기기↔서버 기록 합치기 규칙 테스트 |
 | `npm run test:e2e` | 5개 화면 폭·200% 확대·큰 글자에서 가로 넘침 검사 + 스크린샷 |
 | `npm run dataset` | 연습 데이터셋 다시 만들기 |
 | `npm run build` | 배포용 빌드 |
@@ -43,3 +44,4 @@ docs/             데이터셋, 콘텐츠 작성법, AX 학습 로그
 - [레슨 콘텐츠 작성 가이드](docs/content-schema.md)
 - [연습 데이터셋](docs/dataset.md)
 - [AX 학습 로그](docs/ax-log.md)
+- [Supabase 설정 체크리스트](docs/setup-supabase.md)
